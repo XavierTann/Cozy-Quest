@@ -39,6 +39,7 @@ public class HealthSystem : MonoBehaviour {
     }
 
     private void TakeDamage() {
+        // Test
         currentHealth -= enemyDamage * Time.deltaTime;
         Debug.Log(currentHealth);
         healthBar.GetComponent<HealthBar>().SetHealth(currentHealth);
