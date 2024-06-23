@@ -5,44 +5,31 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour {
     [SerializeField] private float maxHealth;
-    [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private GameObject healthBar;
     
-    private PlayerController playerController;
     private float currentHealth;
+    private HealthBarUI healthBarUI;
 
-    
-    private float enemyDamage = 10f;
-    private float enemyRange = 0.5f;
-    
-    private void Start() {
-        playerController = GetComponent<PlayerController>();
+    private void Awake() {
         currentHealth = maxHealth;
-        healthBar.GetComponent<HealthBar>().SetMaxHealth(maxHealth);
-
+        InitializeHealthBarUI();
+            
     }
 
-    private void Update() {
-        // if collide with enemy
-        if (EnemyAttacks()) {
-            TakeDamage();
+    private void InitializeHealthBarUI() {
+        healthBar.SetActive(true);
+        healthBarUI = healthBar.GetComponent<HealthBarUI>();
+        healthBarUI.SetMaxHealth(maxHealth);
+    }
+
+    public void TakeDamage(float enemyDamage) {
+        currentHealth -= enemyDamage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't drop below 0 or exceed max health
+
+        Debug.Log("Current Health: " + currentHealth);
+
+        if (healthBarUI != null) {
+            healthBarUI.SetHealth(currentHealth);
         }
-
     }
-
-    private bool EnemyAttacks()
-    {
-        if (Physics2D.OverlapCircle(playerController.TargetPos, enemyRange, enemyLayer)) {
-            return true;
-        }
-        return false;
-    }
-
-    private void TakeDamage() {
-        // Test
-        currentHealth -= enemyDamage * Time.deltaTime;
-        Debug.Log(currentHealth);
-        healthBar.GetComponent<HealthBar>().SetHealth(currentHealth);
-    }
-        
 }

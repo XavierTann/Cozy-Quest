@@ -18,10 +18,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask collisionLayer;
     [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private LayerMask enemyLayer;
 
     private Vector3 targetPos;
     private Vector3 interactPos;
     private Vector3 faceDirection;
+    
+    private float enemyRange = 0.5f;
+    private float enemyDamage = 10f;
+    public event EventHandler<EnemyAttackEventArgs> EnemyAttack;
 
 
     private void Awake() {
@@ -32,8 +37,12 @@ public class PlayerController : MonoBehaviour
         // Animator
         animator = GetComponent<Animator>();
         playerInputActionMap.Enable();
+
+        // Listen to enemy attack event
+        EnemyAttack += OnEnemyAttack;
     }
 
+   
     public void HandleUpdate() {
         Move();
         Animate();
@@ -60,6 +69,10 @@ public class PlayerController : MonoBehaviour
 
         if (IsWalkable(targetPos)) {
             rb.MovePosition(targetPos);
+        }
+
+        if (EnemyAttacks(enemyRange)) {
+            EnemyAttack?.Invoke(this, new EnemyAttackEventArgs(enemyRange, enemyDamage));
         }
     }
 
@@ -90,4 +103,35 @@ public class PlayerController : MonoBehaviour
     public Vector3 TargetPos {
         get {return targetPos;}
     }
+
+    /* Enemy Code */
+    private bool EnemyAttacks(float enemyRange)
+    {
+        if (Physics2D.OverlapCircle(targetPos, enemyRange, enemyLayer)) {
+            return true;
+        }
+        return false;
+    }
+
+     private void OnEnemyAttack(object sender, EnemyAttackEventArgs e)
+    {
+        GetComponent<HealthSystem>().TakeDamage(e.EnemyDamage);
+    }
+
+
+    // Event Args for Enemy Attack Event
+    public class EnemyAttackEventArgs : EventArgs
+{
+    public float EnemyDamage { get; }
+    public float EnemyRange { get; }
+
+    public EnemyAttackEventArgs(float enemyAttackDamage, float enemyRange)
+    {
+        EnemyDamage = enemyAttackDamage;
+        EnemyRange = enemyRange;
+    }
+}
+
+ /* End of Enemy Code */
+
 }

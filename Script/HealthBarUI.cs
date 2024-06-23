@@ -1,23 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
     private Slider slider;
 
-    private void Start() {
-        slider = GetComponent<Slider>();
-
-        if (slider == null) {
+    private void Awake() {
+        if (!TryGetComponent(out slider)) {
             Debug.LogError("Slider component not found on the GameObject!");
         }
     }
 
     public void SetMaxHealth(float maxHealth) {
-        if (slider != null) {
-            slider.maxValue = maxHealth;
-            slider.value = maxHealth;
-        }
+        slider.maxValue = maxHealth;
+        slider.value = maxHealth;
+
     }
 
     public void SetHealth(float health) {
