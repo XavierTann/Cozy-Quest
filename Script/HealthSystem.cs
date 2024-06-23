@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour {
         currentHealth -= enemyDamage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't drop below 0 or exceed max health
 
-        Debug.Log("Current Health: " + currentHealth);
+        // Debug.Log("Current Health: " + currentHealth);
 
         if (healthBarUI != null) {
             healthBarUI.SetHealth(currentHealth);

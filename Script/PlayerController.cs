@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
 
@@ -50,18 +51,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) {
             Interact();
         }
-    }
 
-    private void Interact()
-    {
-        faceDirection = new Vector3(movement.x, movement.y);
-        interactPos = transform.position + faceDirection;
-        
-        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
-        if (collider != null) {
-            collider.GetComponent<Interactable>()?.Interact();
+        if (Input.GetKeyDown(KeyCode.F)) {
+            Debug.Log("Attacking");
+            Attack();
         }
     }
+
+
+    
 
     private void Move() {
         movement = playerInputActionMap.Movement.Move.ReadValue<Vector2>();
@@ -92,6 +90,33 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    private void Interact()
+    {
+        faceDirection = new Vector3(movement.x, movement.y);
+        interactPos = transform.position + faceDirection;
+        
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
+        if (collider != null) {
+            collider.GetComponent<Interactable>()?.Interact();
+        }
+    }
+
+
+    private void Attack()
+    {
+        GameObject playerGameObject = gameObject;
+        if (playerGameObject == null) {
+            Debug.Log ("No object detected");
+        }
+        else {
+            Debug.Log(playerGameObject);
+            AttackSystem.Instance.PerformAttack(playerGameObject);
+        }
+        
+    }
+
+
 
     private bool IsWalkable(Vector3 targetPos) {
         if (Physics2D.OverlapCircle(targetPos, 0.2f, collisionLayer | interactableLayer) != null) {

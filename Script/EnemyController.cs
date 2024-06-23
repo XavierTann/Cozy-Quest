@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+
 
 public class EnemyController : MonoBehaviour {
 
     private RandomMovement randomMovement;
     private Animator animator;
+    private EnemyStats enemyStats;
 
     private void Start() {
         randomMovement = GetComponent<RandomMovement>();
         animator = GetComponent<Animator>();
+        enemyStats = GetComponent<EnemyStats>();
     }
 
     private void Update() {
