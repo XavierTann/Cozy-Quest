@@ -4,34 +4,27 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
     private Slider slider;
 
     private void Awake() {
         if (!TryGetComponent(out slider)) {
             Debug.LogError("Slider component not found on the GameObject!");
         }
+        
     }
 
-    // private void Update() {
-    //     HealthBarFollowPlayer();
-    // }
+    private void Start() {
+        slider.value = 1;
+    }
 
-    public void SetMaxHealth(float maxHealth) {
-        slider.maxValue = maxHealth;
-        slider.value = maxHealth;
+    public void SetMaxHealth() {
+        slider.value = 1;
 
     }
 
-    public void SetHealth(float health) {
+    public void SetHealth(float health, float maxHealth) {
         if (slider != null) {
-            slider.value = health;
+            slider.value = health/maxHealth;
         }
     }
-
-    // private void HealthBarFollowPlayer() {
-    //     Vector3 offset = new Vector3(100f, 200f, 300f);
-    //     Vector3 position = player.transform.position ;
-    //     GetComponent<Transform>().position = position;
-    // }
 }

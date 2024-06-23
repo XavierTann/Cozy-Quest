@@ -4,32 +4,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour {
-    [SerializeField] private float maxHealth;
     [SerializeField] private GameObject healthBar;
     
-    private float currentHealth;
     private HealthBarUI healthBarUI;
+    private IStats playerStats;
 
-    private void Awake() {
-        currentHealth = maxHealth;
+    // Event to notify when damage is taken
+    public event EventHandler OnDamageTaken;
+
+
+    private void Awake()
+    {
         InitializeHealthBarUI();
-            
+    }
+
+    public void TakeDamage(float damage)
+    {
+        playerStats.SetHealth(playerStats.GetHealth() - damage);
+        Debug.Log(playerStats.GetHealth());
+
+        OnDamageTaken?.Invoke(this, EventArgs.Empty);
+
+        UpdateHealthUI();
     }
 
     private void InitializeHealthBarUI() {
+        playerStats = gameObject.GetComponent<IStats>();
         healthBar.SetActive(true);
         healthBarUI = healthBar.GetComponent<HealthBarUI>();
-        healthBarUI.SetMaxHealth(maxHealth);
+        healthBarUI.SetMaxHealth();
     }
 
-    public void TakeDamage(float enemyDamage) {
-        currentHealth -= enemyDamage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't drop below 0 or exceed max health
-
-        // Debug.Log("Current Health: " + currentHealth);
-
-        if (healthBarUI != null) {
-            healthBarUI.SetHealth(currentHealth);
-        }
+    public void UpdateHealthUI() {
+        healthBarUI.SetHealth(playerStats.GetHealth(), playerStats.GetMaxHealth());
     }
 }

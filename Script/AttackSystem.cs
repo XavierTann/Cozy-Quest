@@ -20,13 +20,20 @@ public class AttackSystem : MonoBehaviour {
         }
     }
 
-    public void PerformAttack(GameObject attacker, GameObject attackee) {
+    public void PerformAttack(GameObject attacker, GameObject attackee)
+    {
         IStats attackerStats = attacker.GetComponent<IStats>();
-        IStats attackeeStats = attackee.GetComponent<IStats>();
+        HealthSystem attackeeHealthSystem = attackee.GetComponent<HealthSystem>();
 
-        attackeeStats.SetHealth(attackeeStats.GetHealth() - attackerStats.GetAttackDamage());
-
-        // after this use health system to update ui?
+        if (attackerStats != null && attackeeHealthSystem != null)
+        {
+            attackeeHealthSystem.TakeDamage(attackerStats.GetAttackDamage());
+            Debug.Log(attackee.GetComponent<IStats>().GetHealth());
+        }
+        else
+        {
+            Debug.LogError("Attack failed: Components not found.");
+        }
     }
 
     public GameObject DetectAttack(GameObject attacker, LayerMask attackeeLayer) {

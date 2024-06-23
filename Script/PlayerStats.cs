@@ -4,9 +4,21 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, IStats {
-    [SerializeField] private float playerHealth;
+    [SerializeField] private float playerMaxHealth;
     [SerializeField] private float playerAttackDamage;
     [SerializeField] private float playerAttackRange;
+
+    private float playerHealth;
+
+    private void Awake()
+    {
+        // Initialize the enemy's health to the maximum health value
+        playerHealth = playerMaxHealth;
+    }
+
+    public float GetMaxHealth() {
+        return playerMaxHealth;
+    }
 
     public float GetHealth() {
         return playerHealth;

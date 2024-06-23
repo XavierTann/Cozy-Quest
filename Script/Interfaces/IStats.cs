@@ -1,6 +1,8 @@
 using UnityEngine;
 
 interface IStats {
+
+    public float GetMaxHealth();
     
     public float GetHealth();
 

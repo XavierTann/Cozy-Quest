@@ -13,6 +13,9 @@ public class EnemyController : MonoBehaviour {
     private RandomMovement randomMovement;
     private Animator animator;
 
+    private bool canAttack = true;
+    private float attackCooldown = 2.0f;
+
 
     private void Start() {
         randomMovement = GetComponent<RandomMovement>();
@@ -22,7 +25,10 @@ public class EnemyController : MonoBehaviour {
     private void Update() {
         Move();
         Animate();
-        Attack();
+
+        if (canAttack) {
+            Attack();
+        }
     }
 
     private void Move()
@@ -50,7 +56,13 @@ public class EnemyController : MonoBehaviour {
         GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, playerLayer);
         if (attackee != null) {
             AttackSystem.Instance.PerformAttack(gameObject, attackee);
+            StartCoroutine(CanAttack());
         }
     }
-   
+
+    private IEnumerator CanAttack() {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
 }
