@@ -1,11 +1,9 @@
+using System.Diagnostics.Tracing;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
 public class AttackSystem : MonoBehaviour {
-    // Attack logic, like detecting hits, and applying damage
-
-    [SerializeField] private LayerMask enemyLayer;
-
-    private EnemyStats enemyStats;
+    // Attack logic, like applying damage, detecting attacks
 
     public static AttackSystem Instance { get; private set; }
 
@@ -22,26 +20,24 @@ public class AttackSystem : MonoBehaviour {
         }
     }
 
-    public void PerformAttack(GameObject player) {
-        var collider = Physics2D.OverlapCircle(player.transform.position, 0.2f, enemyLayer);
+    public void PerformAttack(GameObject attacker, GameObject attackee) {
+        IStats attackerStats = attacker.GetComponent<IStats>();
+        IStats attackeeStats = attackee.GetComponent<IStats>();
+
+        attackeeStats.SetHealth(attackeeStats.GetHealth() - attackerStats.GetAttackDamage());
+
+        // after this use health system to update ui?
+    }
+
+    public GameObject DetectAttack(GameObject attacker, LayerMask attackeeLayer) {
+        IStats attackerStats = attacker.GetComponent<IStats>();
+        var collider = Physics2D.OverlapCircle(attacker.transform.position, attackerStats.GetAttackRange(), attackeeLayer);
         if (collider != null) {
-            enemyStats = collider.GetComponent<EnemyStats>();
-            float oldEnemyHealth = enemyStats.GetEnemyHealth();
-            float playerDamage = player.GetComponent<PlayerStats>().GetPlayerAttackDamage();
-            float newEnemyHealth = oldEnemyHealth - playerDamage;
-            enemyStats.SetEnemyHealth(newEnemyHealth);
-            Debug.Log("Enemy Detected!");
-            Debug.Log("Enemy Health is " + newEnemyHealth);
+            return collider.gameObject;
         }
-        Debug.Log("Enemy not detected");
-        
-        
-        
 
-
-
-
-
+        // No object detected
+        return null;
     }
     
 }

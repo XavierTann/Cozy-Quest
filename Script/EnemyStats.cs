@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour {
+public class EnemyStats : MonoBehaviour, IStats {
     [SerializeField] private float enemyHealth;
     [SerializeField] private float enemyAttackDamage;
     [SerializeField] private float enemyAttackRange;
 
-    public float GetEnemyHealth() {
+    public float GetHealth() {
         return enemyHealth;
     }
 
-    public void SetEnemyHealth(float enemyHealth) {
+    public void SetHealth(float enemyHealth) {
         this.enemyHealth = enemyHealth;
     }
 
-    public float GetEnemyAttackDamage() {
+    public float GetAttackDamage() {
         return enemyAttackDamage;
     }
 
-    public float GetEnemyAttackRange() {
+    public float GetAttackRange() {
         return enemyAttackRange;
     }
 }

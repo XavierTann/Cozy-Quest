@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Scripting.APIUpdating;
-using UnityEngine.Tilemaps;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,11 +23,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 interactPos;
     private Vector3 faceDirection;
     
-    private float enemyRange = 0.5f;
-    private float enemyDamage = 10f;
-    public event EventHandler<EnemyAttackEventArgs> EnemyAttack;
-
-
     private void Awake() {
         // Movement
         playerInputActionMap = new PlayerInputActionMap();
@@ -38,9 +31,6 @@ public class PlayerController : MonoBehaviour
         // Animator
         animator = GetComponent<Animator>();
         playerInputActionMap.Enable();
-
-        // Listen to enemy attack event
-        EnemyAttack += OnEnemyAttack;
     }
 
    
@@ -53,7 +43,6 @@ public class PlayerController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.F)) {
-            Debug.Log("Attacking");
             Attack();
         }
     }
@@ -67,10 +56,6 @@ public class PlayerController : MonoBehaviour
 
         if (IsWalkable(targetPos)) {
             rb.MovePosition(targetPos);
-        }
-
-        if (EnemyAttacks(enemyRange)) {
-            EnemyAttack?.Invoke(this, new EnemyAttackEventArgs(enemyRange, enemyDamage));
         }
     }
 
@@ -105,13 +90,9 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        GameObject playerGameObject = gameObject;
-        if (playerGameObject == null) {
-            Debug.Log ("No object detected");
-        }
-        else {
-            Debug.Log(playerGameObject);
-            AttackSystem.Instance.PerformAttack(playerGameObject);
+        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, enemyLayer);
+        if (attackee != null) {
+            AttackSystem.Instance.PerformAttack(gameObject, attackee);
         }
         
     }
@@ -128,35 +109,5 @@ public class PlayerController : MonoBehaviour
     public Vector3 TargetPos {
         get {return targetPos;}
     }
-
-    /* Enemy Code */
-    private bool EnemyAttacks(float enemyRange)
-    {
-        if (Physics2D.OverlapCircle(targetPos, enemyRange, enemyLayer)) {
-            return true;
-        }
-        return false;
-    }
-
-     private void OnEnemyAttack(object sender, EnemyAttackEventArgs e)
-    {
-        GetComponent<HealthSystem>().TakeDamage(e.EnemyDamage);
-    }
-
-
-    // Event Args for Enemy Attack Event
-    public class EnemyAttackEventArgs : EventArgs
-{
-    public float EnemyDamage { get; }
-    public float EnemyRange { get; }
-
-    public EnemyAttackEventArgs(float enemyAttackDamage, float enemyRange)
-    {
-        EnemyDamage = enemyAttackDamage;
-        EnemyRange = enemyRange;
-    }
-}
-
- /* End of Enemy Code */
 
 }
