@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
+    [SerializeField] private LayerMask collisionLayer;
+    [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private LayerMask waterLayer;
     [SerializeField] private LayerMask playerLayer;
 
     private RandomMovement randomMovement;
@@ -33,7 +36,20 @@ public class EnemyController : MonoBehaviour {
 
     private void Move()
     {
-        randomMovement.HandleUpdate();
+        Vector2 currentPos = new(transform.position.x, transform.position.y);
+        Vector2 newPos = currentPos + (randomMovement.GetMoveDirection * randomMovement.GetMoveSpeed * Time.deltaTime);
+        if (IsWalkable(newPos))
+        {   
+            randomMovement.HandleUpdate();
+        }
+        
+    }
+
+    private bool IsWalkable(Vector3 targetPos) {
+        if (Physics2D.OverlapCircle(targetPos, 0.1f, collisionLayer | interactableLayer | waterLayer) != null) {
+            return false;
+        }
+        return true;
     }
 
     private void Animate()

@@ -7,24 +7,30 @@ public class HealthBarUI : MonoBehaviour
     private Slider slider;
 
     private void Awake() {
+        // Try to get the Slider component
         if (!TryGetComponent(out slider)) {
             Debug.LogError("Slider component not found on the GameObject!");
-        }
-        
+        } 
     }
 
     private void Start() {
-        slider.value = 1;
+        // Ensure slider is not null before accessing it
+        if (slider != null) {
+            slider.value = 1;
+        } 
     }
 
     public void SetMaxHealth() {
-        slider.value = 1;
-
+        // Ensure slider is not null before accessing it
+        if (slider != null) {
+            slider.value = 1;
+        } 
     }
 
     public void SetHealth(float health, float maxHealth) {
+        // Ensure slider is not null before accessing it
         if (slider != null) {
-            slider.value = health/maxHealth;
-        }
+            slider.value = health / maxHealth;
+        } 
     }
 }

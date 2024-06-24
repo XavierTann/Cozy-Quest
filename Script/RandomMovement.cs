@@ -37,6 +37,10 @@ public class RandomMovement : MonoBehaviour
     {
         get { return moveDirection; }
     }
-    
+
+    public float GetMoveSpeed
+    {
+        get { return moveSpeed; }
+    }
 }
 

@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask collisionLayer;
     [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private LayerMask waterLayer;
     [SerializeField] private LayerMask enemyLayer;
 
     private Vector3 targetPos;
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour
 
 
     private bool IsWalkable(Vector3 targetPos) {
-        if (Physics2D.OverlapCircle(targetPos, 0.2f, collisionLayer | interactableLayer) != null) {
+        if (Physics2D.OverlapCircle(targetPos, 0.1f, collisionLayer | interactableLayer | waterLayer) != null) {
             return false;
         }
         return true;

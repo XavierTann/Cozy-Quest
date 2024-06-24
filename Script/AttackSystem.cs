@@ -28,7 +28,6 @@ public class AttackSystem : MonoBehaviour {
         if (attackerStats != null && attackeeHealthSystem != null)
         {
             attackeeHealthSystem.TakeDamage(attackerStats.GetAttackDamage());
-            Debug.Log(attackee.GetComponent<IStats>().GetHealth());
         }
         else
         {
