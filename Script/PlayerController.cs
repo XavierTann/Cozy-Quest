@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 
 
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
    
     public void HandleUpdate() {
         Move();
-        Animate();
+        MoveAnimation();
 
         if (Input.GetKeyDown(KeyCode.E)) {
             Interact();
@@ -48,6 +49,11 @@ public class PlayerController : MonoBehaviour
             Attack();
             AttackAnimation();
         }
+
+        if (Input.GetKeyUp(KeyCode.F)){
+            animator.SetBool("isAttacking", false);
+        }
+
     }
 
 
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Animate() {
+    private void MoveAnimation() {
         if (movement != Vector2.zero) {
             // Moving
             if (movement.x != 0) movement.y = 0;
@@ -101,7 +107,13 @@ public class PlayerController : MonoBehaviour
     }
 
     private void AttackAnimation() {
+        animator.SetBool("isAttacking", true);
+        if (movement != Vector2.zero) {
+            animator.SetFloat("moveX", movement.x);
+            animator.SetFloat("moveY", movement.y);
+        }
 
+       
     }
 
 
