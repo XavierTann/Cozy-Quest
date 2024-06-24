@@ -11,21 +11,37 @@ public class HealthSystem : MonoBehaviour {
 
     // Event to notify when damage is taken
     public event EventHandler OnDamageTaken;
+    public event EventHandler OnDeath;
 
 
     private void Awake()
     {
         InitializeHealthBarUI();
+        OnDeath += On_Death;
+    }
+
+    private void On_Death(object sender, EventArgs e) {
+        Debug.Log("Player died");
     }
 
     public void TakeDamage(float damage)
     {
-        playerStats.SetHealth(playerStats.GetHealth() - damage);
-        Debug.Log(playerStats.GetHealth());
+        float newHealth = playerStats.GetHealth() - damage;
 
-        OnDamageTaken?.Invoke(this, EventArgs.Empty);
+        if (newHealth <= 0) 
+        {
+            OnDeath?.Invoke(this, EventArgs.Empty);
+        }
+        
+        else 
+        {
+            playerStats.SetHealth(newHealth);
 
-        UpdateHealthUI();
+            OnDamageTaken?.Invoke(this, EventArgs.Empty);
+
+            UpdateHealthUI();
+        }
+        
     }
 
     private void InitializeHealthBarUI() {

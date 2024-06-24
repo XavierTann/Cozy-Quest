@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F)) {
             Attack();
+            AttackAnimation();
         }
     }
 
@@ -99,6 +100,9 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void AttackAnimation() {
+
+    }
 
 
     private bool IsWalkable(Vector3 targetPos) {
