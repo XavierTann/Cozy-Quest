@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     private void Move() {
         movement = playerInputActionMap.Movement.Move.ReadValue<Vector2>();
         targetPos = rb.position + movement * moveSpeed * Time.deltaTime;
+        faceDirection = new Vector3(movement.x, movement.y);
 
         if (IsWalkable(targetPos)) {
             rb.MovePosition(targetPos);
@@ -87,7 +88,6 @@ public class PlayerController : MonoBehaviour
 
     private void Interact()
     {
-        faceDirection = new Vector3(movement.x, movement.y);
         interactPos = transform.position + faceDirection;
         
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, enemyLayer);
+        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, enemyLayer, faceDirection);
         if (attackee != null) {
             AttackSystem.Instance.PerformAttack(gameObject, attackee);
         }

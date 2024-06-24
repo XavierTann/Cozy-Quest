@@ -19,6 +19,8 @@ public class EnemyController : MonoBehaviour {
     private bool canAttack = true;
     private float attackCooldown = 2.0f;
 
+    private Vector2 faceDirection;
+
 
     private void Start() {
         randomMovement = GetComponent<RandomMovement>();
@@ -38,6 +40,8 @@ public class EnemyController : MonoBehaviour {
     {
         Vector2 currentPos = new(transform.position.x, transform.position.y);
         Vector2 newPos = currentPos + (randomMovement.GetMoveDirection * randomMovement.GetMoveSpeed * Time.deltaTime);
+        faceDirection = randomMovement.GetMoveDirection;
+
         if (IsWalkable(newPos))
         {   
             randomMovement.HandleUpdate();
@@ -54,12 +58,11 @@ public class EnemyController : MonoBehaviour {
 
     private void Animate()
     {
-        Vector2 movement = randomMovement.GetMoveDirection;
 
-        if (movement != Vector2.zero) {
+        if (faceDirection != Vector2.zero) {
             animator.SetBool("isMoving", true);
-            animator.SetFloat("MoveX", movement.x);
-            animator.SetFloat("MoveY", movement.y);
+            animator.SetFloat("MoveX", faceDirection.x);
+            animator.SetFloat("MoveY", faceDirection.y);
         }
 
         else {
@@ -69,7 +72,7 @@ public class EnemyController : MonoBehaviour {
 
     private void Attack()
     {
-        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, playerLayer);
+        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, playerLayer, faceDirection);
         if (attackee != null) {
             AttackSystem.Instance.PerformAttack(gameObject, attackee);
             StartCoroutine(CanAttack());

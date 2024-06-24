@@ -29,9 +29,9 @@ public class RandomMovement : MonoBehaviour
     {
         // Get a random direction
         float randomAngle = UnityEngine.Random.Range(0f, 360f);
-        moveDirection = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)).normalized;
+        float radian = randomAngle * Mathf.Deg2Rad;
+        moveDirection = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian)).normalized;
     }
-
 
     public Vector2 GetMoveDirection
     {
@@ -43,4 +43,3 @@ public class RandomMovement : MonoBehaviour
         get { return moveSpeed; }
     }
 }
-

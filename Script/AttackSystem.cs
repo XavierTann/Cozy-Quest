@@ -28,6 +28,7 @@ public class AttackSystem : MonoBehaviour {
         if (attackerStats != null && attackeeHealthSystem != null)
         {
             attackeeHealthSystem.TakeDamage(attackerStats.GetAttackDamage());
+            Debug.Log(attackee.GetComponent<IStats>().GetHealth());
         }
         else
         {
@@ -35,11 +36,20 @@ public class AttackSystem : MonoBehaviour {
         }
     }
 
-    public GameObject DetectAttack(GameObject attacker, LayerMask attackeeLayer) {
+    public GameObject DetectAttack(GameObject attacker, LayerMask attackeeLayer, Vector3 faceDirection) {
         IStats attackerStats = attacker.GetComponent<IStats>();
-        var collider = Physics2D.OverlapCircle(attacker.transform.position, attackerStats.GetAttackRange(), attackeeLayer);
-        if (collider != null) {
-            return collider.gameObject;
+
+        Vector2 faceDirection2D = new (faceDirection.x, faceDirection.y);
+
+        Vector2 start = attacker.transform.position;
+
+        Vector2 end = start + faceDirection2D * attackerStats.GetAttackRange();
+
+        RaycastHit2D hit = Physics2D.Linecast(start, end, attackeeLayer);
+
+        if (hit.collider != null) {
+            Debug.Log("Hit!");
+            return hit.collider.gameObject;
         }
 
         // No object detected
