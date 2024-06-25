@@ -28,7 +28,7 @@ public class AttackSystem : MonoBehaviour {
         if (attackerStats != null && attackeeHealthSystem != null)
         {
             attackeeHealthSystem.TakeDamage(attackerStats.GetAttackDamage());
-            Debug.Log(attackee.GetComponent<IStats>().GetHealth());
+            // Debug.Log(attackee.GetComponent<IStats>().GetHealth());
         }
         else
         {
@@ -48,7 +48,7 @@ public class AttackSystem : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Linecast(start, end, attackeeLayer);
 
         if (hit.collider != null) {
-            Debug.Log("Hit!");
+            // Debug.Log("Hit!");
             return hit.collider.gameObject;
         }
 

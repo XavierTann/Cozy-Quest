@@ -75,11 +75,11 @@ public class EnemyController : MonoBehaviour {
         GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, playerLayer, faceDirection);
         if (attackee != null) {
             AttackSystem.Instance.PerformAttack(gameObject, attackee);
-            StartCoroutine(CanAttack());
+            StartCoroutine(AttackCooldown());
         }
     }
 
-    private IEnumerator CanAttack() {
+    private IEnumerator AttackCooldown() {
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;

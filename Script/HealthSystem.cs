@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour {
@@ -8,6 +9,7 @@ public class HealthSystem : MonoBehaviour {
     
     private HealthBarUI healthBarUI;
     private IStats playerStats;
+    private bool isDead = false;
 
     // Event to notify when damage is taken
     public event EventHandler OnDamageTaken;
@@ -28,18 +30,16 @@ public class HealthSystem : MonoBehaviour {
     {
         float newHealth = playerStats.GetHealth() - damage;
 
-        if (newHealth <= 0) 
+        if (newHealth <= 0 && isDead == false) 
         {
-            OnDeath?.Invoke(this, EventArgs.Empty);
+            Die();
         }
         
         else 
         {
             playerStats.SetHealth(newHealth);
-
-            OnDamageTaken?.Invoke(this, EventArgs.Empty);
-
             UpdateHealthUI();
+            OnDamageTaken?.Invoke(this, EventArgs.Empty);
         }
         
     }
@@ -49,6 +49,13 @@ public class HealthSystem : MonoBehaviour {
         healthBar.SetActive(true);
         healthBarUI = healthBar.GetComponent<HealthBarUI>();
         healthBarUI.SetMaxHealth();
+    }
+
+    private void Die() {
+        playerStats.SetHealth(0);
+        UpdateHealthUI();
+        isDead = true;
+        OnDeath?.Invoke(this, EventArgs.Empty);
     }
 
     public void UpdateHealthUI() {

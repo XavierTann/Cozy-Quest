@@ -565,7 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMaxHealth: 100
   playerAttackDamage: 10
-  playerAttackRange: 2
+  playerAttackRange: 10
 --- !u!61 &73933814
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -602,7 +602,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1, y: 2}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
