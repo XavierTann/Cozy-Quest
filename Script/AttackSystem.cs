@@ -12,7 +12,7 @@ public class AttackSystem : MonoBehaviour {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: if you want it to persist across scenes
+    
         }
         else
         {

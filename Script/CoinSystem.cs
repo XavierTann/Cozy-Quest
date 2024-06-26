@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 
 public class CoinSystem : MonoBehaviour {
+
+    public static CoinSystem Instance { get; private set; }
+
     [SerializeField] private int coinsDroppedOnDeath;
     [SerializeField] private int startingCoins;
     [SerializeField] private GameObject coinCounter;
@@ -9,24 +12,52 @@ public class CoinSystem : MonoBehaviour {
     private int currentCoins;
 
     private void Awake() {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         currentCoins = startingCoins;
         UpdateCoinUI();
         
-        GetComponent<HealthSystem>().OnDeath += loseCoinsOnDeath;
+        GetComponent<HealthSystem>().OnDeath += LoseCoinsOnDeath;
     }
 
 
-    private void spendCoins(int cost) {
-        currentCoins -= cost;
+    public void SpendCoins(int cost) {
+        if (HasEnoughMoney(cost)) {
+            currentCoins -= cost;
+            UpdateCoinUI();
+            Debug.Log("Player has spent " + cost + " coins!");
+        }
+        else {
+            Debug.Log("Player has not enough money!");
+        }
+        
+    }
+
+    public void EarnCoins(int cost) {
+        currentCoins += cost;
         UpdateCoinUI();
-        Debug.Log("Player has spent " + cost + " coins!");
+        Debug.Log("Player has earned " + cost + " coins!");
     }
 
 
-    private void loseCoinsOnDeath(object sender, EventArgs e) {
+    private void LoseCoinsOnDeath(object sender, EventArgs e) {
         currentCoins -= coinsDroppedOnDeath;
         UpdateCoinUI();
         // Debug.Log("Player died and has lost " + currentCoins + " coins!");
+    }
+
+    private bool HasEnoughMoney(int cost) {
+        if (cost > currentCoins) {
+            return false;
+        }
+        return true;
     }
 
     private void UpdateCoinUI() {

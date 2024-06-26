@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class DialogManager : MonoBehaviour
 {
     [SerializeField] GameObject dialogBox;
     [SerializeField] GameObject optionsBox;
+    [SerializeField] GameObject shopBox;
     [SerializeField] Text dialogText;
 
     [SerializeField] int lettersPerSecond;
@@ -42,9 +44,6 @@ public class DialogManager : MonoBehaviour
             else {
                 // Show options
                 optionsBox.SetActive(true);
-
-                // Reset Line Count
-                currentLine = 0;
             }
 
         }
@@ -68,12 +67,18 @@ public class DialogManager : MonoBehaviour
     public void Leave() {
         dialogBox.SetActive(false);
         optionsBox.SetActive(false);
+        currentLine = 0;
         OnHideDialog?.Invoke(); // Change state of game controller back to Free Roam
     }
 
     public void GoToShop() {
         dialogBox.SetActive(false);
         optionsBox.SetActive(false);
+        currentLine = 0;
+        shopBox.SetActive(true);
+
+        // Change state to shopping
+        
         Debug.Log("Shop Opened!");
     }
        
