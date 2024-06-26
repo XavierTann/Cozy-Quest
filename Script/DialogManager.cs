@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class DialogManager : MonoBehaviour
 {
     [SerializeField] GameObject dialogBox;
+    [SerializeField] GameObject optionsBox;
     [SerializeField] Text dialogText;
 
     [SerializeField] int lettersPerSecond;
@@ -39,9 +40,11 @@ public class DialogManager : MonoBehaviour
                 StartCoroutine(TypeDialog(dialog.DialogLines[currentLine]));
             }
             else {
-                dialogBox.SetActive(false);
+                // Show options
+                optionsBox.SetActive(true);
+
+                // Reset Line Count
                 currentLine = 0;
-                OnHideDialog?.Invoke(); // Change state of game controller back to Free Roam
             }
 
         }
@@ -58,5 +61,20 @@ public class DialogManager : MonoBehaviour
         }
         isTyping = false;
     }
-    
+
+
+    // Dialog Options
+
+    public void Leave() {
+        dialogBox.SetActive(false);
+        optionsBox.SetActive(false);
+        OnHideDialog?.Invoke(); // Change state of game controller back to Free Roam
+    }
+
+    public void GoToShop() {
+        dialogBox.SetActive(false);
+        optionsBox.SetActive(false);
+        Debug.Log("Shop Opened!");
+    }
+       
 }
