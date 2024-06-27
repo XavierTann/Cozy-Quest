@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private LayerMask waterLayer;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask collectiblesLayer;
+
+    [SerializeField] private float pickUpRange = 1f;
 
     private Vector3 targetPos;
     private Vector3 interactPos;
@@ -52,6 +55,18 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.F)){
             animator.SetBool("isAttacking", false);
+        }
+
+        if (CoinsDetected() != null) {
+
+            // Logic to remove coin prefab
+            GameObject coin = CoinsDetected().gameObject;
+            Destroy(coin);
+
+            // Logic to add coins to player coins system
+            CoinSystem.Instance.EarnCoins(1);
+
+            Debug.Log("Coins Collected!");
         }
 
     }
@@ -126,6 +141,14 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 TargetPos {
         get {return targetPos;}
+    }
+
+    private Collider2D CoinsDetected() {
+        var collider = Physics2D.OverlapCircle(gameObject.transform.position, pickUpRange, collectiblesLayer);
+        if (collider != null) {
+            return collider;
+        } 
+        return null;
     }
 
 }
