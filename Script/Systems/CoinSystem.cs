@@ -6,8 +6,11 @@ public class CoinSystem : MonoBehaviour {
     public static CoinSystem Instance { get; private set; }
 
     [SerializeField] private int coinsDroppedOnDeath;
+    [SerializeField] private int maxDropDistance;
+
     [SerializeField] private int startingCoins;
     [SerializeField] private GameObject coinCounter;
+    [SerializeField] private GameObject coinPrefab;
 
     private int currentCoins;
 
@@ -50,6 +53,7 @@ public class CoinSystem : MonoBehaviour {
     private void LoseCoinsOnDeath(object sender, EventArgs e) {
         currentCoins -= coinsDroppedOnDeath;
         UpdateCoinUI();
+        CoinDropSystem.Instance.DropCoins(gameObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
         // Debug.Log("Player died and has lost " + currentCoins + " coins!");
     }
 
