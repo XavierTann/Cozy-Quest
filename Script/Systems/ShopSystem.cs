@@ -1,15 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ShopSystem : MonoBehaviour
 {
-    // Must Link to coin system
-    // Must link to scriptable objects for the cost
-    // Must link to player stats to equip the weapon
+    public static ShopSystem Instance {get; private set;}
 
     [SerializeField] List<WeaponSO> weaponSOList;
     [SerializeField] List<ArmorSO> armorSOList;
+
+    public event Action OnShowShop;
+    public event Action OnHideShop;
+
+    private void Awake() {
+        if (Instance != null & Instance != this) {
+            Destroy(gameObject);
+        }
+
+        Instance = this;
+    }
 
     public void BuyItem(WeaponSO weaponSO) {
         CoinSystem.Instance.SpendCoins(weaponSO.Cost);
@@ -25,13 +36,12 @@ public class ShopSystem : MonoBehaviour
         }
     }
 
-    public void DisplayItems() {
-        foreach (WeaponSO weaponSO in weaponSOList) {
-            // Display
-        }
-        foreach (ArmorSO armorSO in armorSOList) {
-            // Display
-        }
+    public void InvokeOnShowShop() {
+        OnShowShop?.Invoke();
+    }
+
+    public void InvokeOnHideShop() {
+        OnHideShop?.Invoke();
     }
 
 }

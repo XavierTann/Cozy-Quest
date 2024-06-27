@@ -68,6 +68,7 @@ public class DialogManager : MonoBehaviour
         dialogBox.SetActive(false);
         optionsBox.SetActive(false);
         currentLine = 0;
+
         OnHideDialog?.Invoke(); // Change state of game controller back to Free Roam
     }
 
@@ -75,9 +76,8 @@ public class DialogManager : MonoBehaviour
         dialogBox.SetActive(false);
         optionsBox.SetActive(false);
         currentLine = 0;
-        shopBox.SetActive(true);
 
-        // Change state to shopping
+        shopBox.GetComponent<ShopUI>().EnterShop();
         
         Debug.Log("Shop Opened!");
     }

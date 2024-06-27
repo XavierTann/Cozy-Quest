@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum GameState {FreeRoam, Dialog, Battle}
+public enum GameState {FreeRoam, Shop, Dialog, Battle}
 
 public class GameController : MonoBehaviour
 {
@@ -15,9 +15,17 @@ public class GameController : MonoBehaviour
         DialogManager.Instance.OnShowDialog += () => {
             state = GameState.Dialog;
         };
+
         DialogManager.Instance.OnHideDialog += () => {
             state = GameState.FreeRoam;
-            
+        };
+
+        ShopSystem.Instance.OnShowShop += () => {
+            state = GameState.Shop;
+        };
+
+        ShopSystem.Instance.OnHideShop += () => {
+            state = GameState.Shop;
         };
     }
 

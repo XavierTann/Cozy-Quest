@@ -17,4 +17,5 @@ MonoBehaviour:
   damage: 30
   range: 20
   speed: 5
+  cost: 20
   specialEffects: Area of Effect of 5.0

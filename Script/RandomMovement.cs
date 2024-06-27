@@ -1,45 +1,70 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class RandomMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float changeInterval;
+    [SerializeField] private float speed = 0.5f; // Movement speed
+    [SerializeField] private float changeDirectionTime = 2f; // Time to change direction
+    [SerializeField] private LayerMask collisionLayer; // Collision layer mask for obstacles
 
-    private Vector2 moveDirection;
+    private Vector2 movementDirection;
+    private float changeDirectionTimer;
 
-    private void Start() {
-        StartCoroutine(ChangeDirectionRoutine());
-    }
-
-    public void HandleUpdate() {
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
-    }
-
-    private IEnumerator ChangeDirectionRoutine()
+    private void Start()
     {
-        while (true) {
-            yield return new WaitForSeconds(changeInterval);
-            ChangeDirection();
+        PickRandomDirection();
+    }
+
+    private void Update()
+    {
+        HandleUpdate();
+    }
+
+    public void HandleUpdate()
+    {
+        Move();
+        UpdateDirectionTimer();
+    }
+
+    public void PickRandomDirection()
+    {
+        // Pick a random direction in 2D space
+        float randomAngle = Random.Range(0f, 360f);
+        movementDirection = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)).normalized;
+        changeDirectionTimer = changeDirectionTime;
+    }
+
+    private void Move()
+    {
+        if (IsWalkable())
+        {
+            transform.Translate((Vector3)movementDirection * speed * Time.deltaTime, Space.World);
+        }
+
+    }
+
+    private bool IsWalkable()
+    {
+        Vector2 targetPos = (Vector2)transform.position + movementDirection * speed * Time.deltaTime;
+        Collider2D collider = Physics2D.OverlapCircle(targetPos, 0.1f, collisionLayer);
+        return collider == null;
+    }
+
+    private void UpdateDirectionTimer()
+    {
+        changeDirectionTimer -= Time.deltaTime;
+        if (changeDirectionTimer <= 0f)
+        {
+            PickRandomDirection();
         }
     }
 
-    private void ChangeDirection()
+    public Vector2 MoveDirection
     {
-        // Get a random direction
-        float randomAngle = UnityEngine.Random.Range(0f, 360f);
-        float radian = randomAngle * Mathf.Deg2Rad;
-        moveDirection = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian)).normalized;
+        get { return movementDirection; }
     }
 
-    public Vector2 GetMoveDirection
+    public float MoveSpeed
     {
-        get { return moveDirection; }
-    }
-
-    public float GetMoveSpeed
-    {
-        get { return moveSpeed; }
+        get { return speed; }
     }
 }

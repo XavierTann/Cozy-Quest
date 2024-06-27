@@ -38,23 +38,11 @@ public class EnemyController : MonoBehaviour {
 
     private void Move()
     {
-        Vector2 currentPos = new(transform.position.x, transform.position.y);
-        Vector2 newPos = currentPos + (randomMovement.GetMoveDirection * randomMovement.GetMoveSpeed * Time.deltaTime);
-        faceDirection = randomMovement.GetMoveDirection;
-
-        if (IsWalkable(newPos))
-        {   
-            randomMovement.HandleUpdate();
-        }
+        randomMovement.HandleUpdate();
+        faceDirection = randomMovement.MoveDirection;
         
     }
 
-    private bool IsWalkable(Vector3 targetPos) {
-        if (Physics2D.OverlapCircle(targetPos, 0.1f, collisionLayer | interactableLayer | waterLayer) != null) {
-            return false;
-        }
-        return true;
-    }
 
     private void Animate()
     {
