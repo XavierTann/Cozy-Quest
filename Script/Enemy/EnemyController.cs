@@ -13,6 +13,10 @@ public class EnemyController : MonoBehaviour {
     [SerializeField] private LayerMask waterLayer;
     [SerializeField] private LayerMask playerLayer;
 
+    [SerializeField] private int coinsDroppedOnDeath;
+    [SerializeField] private int maxDropDistance;
+    [SerializeField] private GameObject coinPrefab;
+
     private RandomMovement randomMovement;
     private Animator animator;
 
@@ -21,10 +25,10 @@ public class EnemyController : MonoBehaviour {
 
     private Vector2 faceDirection;
 
-
     private void Start() {
         randomMovement = GetComponent<RandomMovement>();
         animator = GetComponent<Animator>();
+        GetComponent<HealthSystem>().OnDeath += DropCoinsOnDeath;
     }
 
     private void Update() {
@@ -71,5 +75,9 @@ public class EnemyController : MonoBehaviour {
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+    }
+
+    private void DropCoinsOnDeath(object sender, EventArgs e) {
+        CoinDropSystem.Instance.DropCoins(gameObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
     }
 }
