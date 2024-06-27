@@ -16,6 +16,7 @@ public class WeaponSO : ScriptableObject
     [SerializeField] private string specialEffects;
 
     public string Name { get => name; }
+    public Sprite Sprite { get => sprite; }
     public float Damage { get => damage; }
     public float Range { get => range; }
     public float Speed { get => speed; }

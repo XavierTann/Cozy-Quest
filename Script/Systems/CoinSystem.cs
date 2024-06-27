@@ -53,7 +53,7 @@ public class CoinSystem : MonoBehaviour {
         // Debug.Log("Player died and has lost " + currentCoins + " coins!");
     }
 
-    private bool HasEnoughMoney(int cost) {
+    public bool HasEnoughMoney(int cost) {
         if (cost > currentCoins) {
             return false;
         }

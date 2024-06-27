@@ -22,10 +22,14 @@ public class ShopSystem : MonoBehaviour
         Instance = this;
     }
 
-    public void BuyItem(WeaponSO weaponSO) {
-        CoinSystem.Instance.SpendCoins(weaponSO.Cost);
-        EquipmentManager.Instance.EquipWeapon(weaponSO);
-        Debug.Log("Player has bought " + weaponSO.name + "!");
+    public bool BuyItem(WeaponSO weaponSO) {
+        if (CoinSystem.Instance.HasEnoughMoney(weaponSO.Cost)) {
+            CoinSystem.Instance.SpendCoins(weaponSO.Cost);
+            EquipmentManager.Instance.EquipWeapon(weaponSO);
+            Debug.Log("Player has bought " + weaponSO.name + "!");
+            return true;
+        }
+        return false;
     }
 
     public void SellItem(WeaponSO weaponSO) {
