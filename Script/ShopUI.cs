@@ -11,6 +11,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] GameObject item1;
     [SerializeField] GameObject item2;
     [SerializeField] GameObject item3;
+    [SerializeField] Button LeaveShopButton;
 
     [SerializeField] WeaponSO weaponSO1;
     [SerializeField] WeaponSO weaponSO2;
@@ -24,6 +25,7 @@ public class ShopUI : MonoBehaviour
         item1.GetComponentInChildren<Button>().onClick.AddListener(() => {RemoveItems(item1, weaponSO1);});
         item2.GetComponentInChildren<Button>().onClick.AddListener(() => {RemoveItems(item2, weaponSO2);});
         item3.GetComponentInChildren<Button>().onClick.AddListener(() => {RemoveItems(item3, weaponSO3);});
+        LeaveShopButton.onClick.AddListener(LeaveShop);
     }
 
 

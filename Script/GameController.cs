@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
         };
 
         ShopSystem.Instance.OnHideShop += () => {
-            state = GameState.Shop;
+            state = GameState.FreeRoam;
         };
     }
 
