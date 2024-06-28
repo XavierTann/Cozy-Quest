@@ -14,11 +14,6 @@ public class RandomMovement : MonoBehaviour
         PickRandomDirection();
     }
 
-    private void Update()
-    {
-        HandleUpdate();
-    }
-
     public void HandleUpdate()
     {
         Move();

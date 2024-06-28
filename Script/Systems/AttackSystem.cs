@@ -27,7 +27,7 @@ public class AttackSystem : MonoBehaviour {
 
         if (attackerStats != null && attackeeHealthSystem != null)
         {
-            attackeeHealthSystem.TakeDamage(attackerStats.GetAttackDamage());
+            attackeeHealthSystem.TakeDamage(attackerStats.AttackDamage);
             // Debug.Log(attackee.GetComponent<IStats>().GetHealth());
         }
         else
@@ -43,7 +43,7 @@ public class AttackSystem : MonoBehaviour {
 
         Vector2 start = attacker.transform.position;
 
-        Vector2 end = start + faceDirection2D * attackerStats.GetAttackRange();
+        Vector2 end = start + faceDirection2D * attackerStats.AttackRange;
 
         RaycastHit2D hit = Physics2D.Linecast(start, end, attackeeLayer);
 

@@ -2,14 +2,16 @@ using UnityEngine;
 
 interface IStats {
 
-    public float GetMaxHealth();
+    float MaxHealth {get;}
     
-    public float GetHealth();
+    float Health {get; set;}
 
-    public void SetHealth(float health);
+    float AttackDamage {get;}
 
-    public float GetAttackDamage();
+    float AttackRange {get;}
 
-    public float GetAttackRange();
+    float MovementSpeed {get;}
+
+    float DetectRange {get;}
     
 }

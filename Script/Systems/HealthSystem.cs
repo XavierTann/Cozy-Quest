@@ -28,7 +28,7 @@ public class HealthSystem : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
-        float newHealth = playerStats.GetHealth() - damage;
+        float newHealth = playerStats.Health - damage;
 
         if (newHealth <= 0 && isDead == false) 
         {
@@ -37,7 +37,7 @@ public class HealthSystem : MonoBehaviour {
         
         else 
         {
-            playerStats.SetHealth(newHealth);
+            playerStats.Health = newHealth;
             UpdateHealthUI();
             OnDamageTaken?.Invoke(this, EventArgs.Empty);
         }
@@ -52,13 +52,13 @@ public class HealthSystem : MonoBehaviour {
     }
 
     private void Die() {
-        playerStats.SetHealth(0);
+        playerStats.Health = 0;
         UpdateHealthUI();
         isDead = true;
         OnDeath?.Invoke(this, EventArgs.Empty);
     }
 
     public void UpdateHealthUI() {
-        healthBarUI.SetHealth(playerStats.GetHealth(), playerStats.GetMaxHealth());
+        healthBarUI.SetHealth(playerStats.Health, playerStats.MaxHealth);
     }
 }

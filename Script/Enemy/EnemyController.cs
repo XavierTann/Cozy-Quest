@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 
@@ -42,8 +43,17 @@ public class EnemyController : MonoBehaviour {
 
     private void Move()
     {
-        randomMovement.HandleUpdate();
-        faceDirection = randomMovement.MoveDirection;
+        EnemyFollow enemyFollowScript = GetComponent<EnemyFollow>();
+        if (enemyFollowScript.DetectedPlayer()) {
+            enemyFollowScript.FollowPlayer(); 
+            faceDirection = enemyFollowScript.GetFollowDirection;    
+        }
+
+        else {
+            // Random movement
+            randomMovement.HandleUpdate();
+            faceDirection = randomMovement.MoveDirection;
+        }
         
     }
 

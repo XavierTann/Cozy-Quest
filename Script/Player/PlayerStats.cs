@@ -7,6 +7,9 @@ public class PlayerStats : MonoBehaviour, IStats {
     [SerializeField] private float playerMaxHealth;
     [SerializeField] private float playerAttackDamage;
     [SerializeField] private float playerAttackRange;
+    [SerializeField] private float playerMovementSpeed;
+    [SerializeField] private float playerDetectRange;
+
 
     private float playerHealth;
 
@@ -16,23 +19,30 @@ public class PlayerStats : MonoBehaviour, IStats {
         playerHealth = playerMaxHealth;
     }
 
-    public float GetMaxHealth() {
-        return playerMaxHealth;
+    public float MaxHealth {
+        get { return playerMaxHealth; }
     }
 
-    public float GetHealth() {
-        return playerHealth;
+    public float Health {
+        get { return playerHealth; }
+        set { playerHealth = Mathf.Clamp(value, 0, playerMaxHealth); } // Ensure health stays within valid range
     }
 
-    public void SetHealth(float playerHealth) {
-        this.playerHealth = playerHealth;
+    public float AttackDamage {
+        get { return playerAttackDamage; }
     }
 
-    public float GetAttackDamage() {
-        return playerAttackDamage;
+    public float AttackRange {
+        get { return playerAttackRange; }
     }
 
-    public float GetAttackRange() {
-        return playerAttackRange;
+    public float MovementSpeed {
+        get { return playerMovementSpeed; }
     }
+
+    public float DetectRange {
+        get { return playerDetectRange; }
+    }
+
+    
 }
