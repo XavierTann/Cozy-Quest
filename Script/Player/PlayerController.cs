@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PlayerController : MonoBehaviour
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private LayerMask collectiblesLayer;
 
+    [SerializeField] private GameObject inventoryUI;
+
     [SerializeField] private float pickUpRange = 1f;
 
     private Vector3 targetPos;
@@ -36,37 +40,37 @@ public class PlayerController : MonoBehaviour
 
         // Animator
         animator = GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        // Enable the input action map
         playerInputActionMap.Enable();
+
+        playerInputActionMap.Player.Attack.performed += _ => OnAttack();
+        playerInputActionMap.Player.OpenInventory.performed += _ => OpenInventory();
+
+    }
+
+    private void OnDisable()
+    {
+        // Disable the input action map
+        playerInputActionMap.Disable();
+
     }
 
    
     public void HandleUpdate() {
         Move();
         MoveAnimation();
-
+        
         if (Input.GetKeyDown(KeyCode.E)) {
             Interact();
         }
 
-        if (Input.GetKeyDown(KeyCode.F)) {
-            Attack();
-            AttackAnimation();
-        }
-
-        if (Input.GetKeyUp(KeyCode.F)){
-            animator.SetBool("isAttacking", false);
-        }
 
         if (CoinsDetected() != null) {
-
-            // Logic to remove coin prefab
-            GameObject coin = CoinsDetected().gameObject;
-            Destroy(coin);
-
-            // Logic to add coins to player coins system
-            CoinSystem.Instance.EarnCoins(1);
-
-            Debug.Log("Coins Collected!");
+            CollectCoins();
         }
 
     }
@@ -75,7 +79,7 @@ public class PlayerController : MonoBehaviour
     
 
     private void Move() {
-        movement = playerInputActionMap.Movement.Move.ReadValue<Vector2>();
+        movement = playerInputActionMap.Player.Move.ReadValue<Vector2>();
         targetPos = rb.position + movement * moveSpeed * Time.deltaTime;
         faceDirection = new Vector3(movement.x, movement.y);
 
@@ -111,6 +115,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnAttack() {
+        Attack();
+        AttackAnimation();
+    }
+
 
     private void Attack()
     {
@@ -122,13 +131,15 @@ public class PlayerController : MonoBehaviour
     }
 
     private void AttackAnimation() {
-        animator.SetBool("isAttacking", true);
+        animator.SetTrigger("isAttacking");
         if (movement != Vector2.zero) {
             animator.SetFloat("moveX", movement.x);
             animator.SetFloat("moveY", movement.y);
         }
+    }
 
-       
+    private void OpenInventory() {
+        inventoryUI.GetComponent<InventoryUI>().DisplayInventory();
     }
 
 
@@ -143,12 +154,24 @@ public class PlayerController : MonoBehaviour
         get {return targetPos;}
     }
 
+
     private Collider2D CoinsDetected() {
         var collider = Physics2D.OverlapCircle(gameObject.transform.position, pickUpRange, collectiblesLayer);
         if (collider != null) {
             return collider;
         } 
         return null;
+    }
+
+    private void CollectCoins() {
+        // Logic to remove coin prefab
+            GameObject coin = CoinsDetected().gameObject;
+            Destroy(coin);
+
+            // Logic to add coins to player coins system
+            CoinSystem.Instance.EarnCoins(1);
+
+            Debug.Log("Coins Collected!");
     }
 
 }

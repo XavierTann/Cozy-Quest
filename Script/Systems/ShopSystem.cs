@@ -24,9 +24,13 @@ public class ShopSystem : MonoBehaviour
 
     public bool BuyItem(WeaponSO weaponSO) {
         if (CoinSystem.Instance.HasEnoughMoney(weaponSO.Cost)) {
+            
             CoinSystem.Instance.SpendCoins(weaponSO.Cost);
+
             EquipmentManager.Instance.EquipWeapon(weaponSO);
-            Debug.Log("Player has bought " + weaponSO.name + "!");
+
+            InventorySystem.Instance.AddItems(weaponSO);
+
             return true;
         }
         return false;

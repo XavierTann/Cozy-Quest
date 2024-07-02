@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum GameState {FreeRoam, Shop, Dialog, Battle}
+public enum GameState {FreeRoam, Shop, Inventory, Dialog, Battle}
 
 public class GameController : MonoBehaviour
 {
@@ -27,6 +27,15 @@ public class GameController : MonoBehaviour
         ShopSystem.Instance.OnHideShop += () => {
             state = GameState.FreeRoam;
         };
+
+        InventorySystem.Instance.OnOpenInventory += () => {
+            state = GameState.Inventory;
+        };
+
+        InventorySystem.Instance.OnHideInventory += () => {
+            state = GameState.FreeRoam;
+        };
+        
     }
 
     private void Update() {
@@ -36,6 +45,9 @@ public class GameController : MonoBehaviour
         }
         else if (state == GameState.Dialog) {
             DialogManager.Instance.HandleUpdate();
+        }
+        else if (state == GameState.Inventory) {
+            InventoryUI.Instance.HandleUpdate();
         }
         else {
             // Battle Mode

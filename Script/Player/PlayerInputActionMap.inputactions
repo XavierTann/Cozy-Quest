@@ -2,7 +2,7 @@
     "name": "PlayerInputActionMap",
     "maps": [
         {
-            "name": "Movement",
+            "name": "Player",
             "id": "052c1cec-9055-4216-a7e6-87a261cb908f",
             "actions": [
                 {
@@ -18,6 +18,24 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "1461eb41-98fd-474c-b6ee-6cae7516dddb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "e7904610-0fe3-4f66-a8f7-bdfe284b876a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenInventory",
+                    "type": "Button",
+                    "id": "f4d407de-fdda-4218-829a-1102236b8fd8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -88,6 +106,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5b1b2dd-53a0-4de5-8d53-76816cbd0d05",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4ea3a8c-18db-476d-ae50-95436f9a9b0d",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

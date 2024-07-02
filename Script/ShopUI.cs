@@ -38,7 +38,6 @@ public class ShopUI : MonoBehaviour
         bool boughtItem = ShopSystem.Instance.BuyItem(weapon);
         if (boughtItem) {
             item.GetComponentInChildren<Image>().sprite = sprite;
-            Debug.Log($"Removed Item, {item}");
         }
         else {
             Debug.Log("Insufficient Money");
