@@ -17,7 +17,8 @@ public class EquipmentManager : MonoBehaviour
 
 
     public void EquipWeapon(WeaponSO weaponSO) {
-        this.weaponSO = weaponSO;     
+        this.weaponSO = weaponSO;    
+        Debug.Log($"{weaponSO.Name} has been equipped"); 
     }
 
     public void EquipArmor(ArmorSO armorSO) {

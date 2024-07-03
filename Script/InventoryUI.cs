@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour
     private List<WeaponSO> weaponSOList = new List<WeaponSO>();
 
     private void Awake() {
-        if (Instance != null & Instance != this ) {
+        if (Instance != null && Instance != this ) {
             Destroy(gameObject);
         }
         Instance = this;
@@ -52,8 +52,12 @@ public class InventoryUI : MonoBehaviour
             foreach (WeaponSO weaponSO in weaponSOList)
             {
             int weaponSOIndex = weaponSOList.IndexOf(weaponSO);
-            Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(weaponSOIndex).GetChild(0);
-            inventorySlot.GetComponent<Image>().sprite = weaponSO.Sprite;
+
+            Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(weaponSOIndex);
+            inventorySlot.GetComponent<InventorySlot>().SetSprite(weaponSO);
+            inventorySlot.GetComponent<InventorySlot>().WeaponSO = weaponSO;
+
+            
             }        
         }
         
