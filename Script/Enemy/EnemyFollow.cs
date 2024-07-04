@@ -18,7 +18,7 @@ public class EnemyFollow : MonoBehaviour {
         float enemyDetectRange = GetComponent<IStats>().DetectRange;
         collider = Physics2D.OverlapCircle(transform.position, enemyDetectRange, playerLayer);
         if (collider != null) {
-            Debug.Log("Detected!");
+            // Debug.Log("Detected!");
             return true;
         }
 
@@ -28,7 +28,7 @@ public class EnemyFollow : MonoBehaviour {
 
     public void FollowPlayer() {
         followDirection = (collider.transform.position - gameObject.transform.position).normalized;
-        Debug.Log(followDirection);
+        // Debug.Log(followDirection);
         float enemySpeed = gameObject.GetComponent<EnemyStats>().MovementSpeed;
         transform.Translate(followDirection * enemySpeed * Time.deltaTime, Space.World);
     }

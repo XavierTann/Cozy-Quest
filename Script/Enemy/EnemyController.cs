@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour {
     private void Start() {
         randomMovement = GetComponent<RandomMovement>();
         animator = GetComponent<Animator>();
-        GetComponent<HealthSystem>().OnDeath += DropCoinsOnDeath;
+        // GetComponent<HealthSystem>().OnDeath += DropCoinsOnDeath;
     }
 
     private void Update() {

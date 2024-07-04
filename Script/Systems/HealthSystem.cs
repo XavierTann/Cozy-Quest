@@ -9,21 +9,17 @@ public class HealthSystem : MonoBehaviour {
     
     private HealthBarUI healthBarUI;
     private IStats playerStats;
+
     private bool isDead = false;
 
     // Event to notify when damage is taken
     public event EventHandler OnDamageTaken;
-    public event EventHandler OnDeath;
+
 
 
     private void Awake()
     {
         InitializeHealthBarUI();
-        OnDeath += On_Death;
-    }
-
-    private void On_Death(object sender, EventArgs e) {
-        Debug.Log("Player died");
     }
 
     public void TakeDamage(float damage)
@@ -32,7 +28,12 @@ public class HealthSystem : MonoBehaviour {
 
         if (newHealth <= 0 && isDead == false) 
         {
-            Die();
+            isDead = true;
+            DeathSystem.Instance.Die(gameObject);
+
+            // Set health to zero in UI
+            playerStats.Health = 0;
+            UpdateHealthUI();
         }
         
         else 
@@ -51,12 +52,7 @@ public class HealthSystem : MonoBehaviour {
         healthBarUI.SetMaxHealth();
     }
 
-    private void Die() {
-        playerStats.Health = 0;
-        UpdateHealthUI();
-        isDead = true;
-        OnDeath?.Invoke(this, EventArgs.Empty);
-    }
+    
 
     public void UpdateHealthUI() {
         healthBarUI.SetHealth(playerStats.Health, playerStats.MaxHealth);

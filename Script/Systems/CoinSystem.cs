@@ -5,12 +5,8 @@ public class CoinSystem : MonoBehaviour {
 
     public static CoinSystem Instance { get; private set; }
 
-    [SerializeField] private int coinsDroppedOnDeath;
-    [SerializeField] private int maxDropDistance;
-
     [SerializeField] private int startingCoins;
     [SerializeField] private GameObject coinCounter;
-    [SerializeField] private GameObject coinPrefab;
 
     private int currentCoins;
 
@@ -27,7 +23,6 @@ public class CoinSystem : MonoBehaviour {
         currentCoins = startingCoins;
         UpdateCoinUI();
         
-        GetComponent<HealthSystem>().OnDeath += LoseCoinsOnDeath;
     }
 
 
@@ -43,19 +38,17 @@ public class CoinSystem : MonoBehaviour {
         
     }
 
-    public void EarnCoins(int cost) {
-        currentCoins += cost;
+    public void EarnCoins(int earnings) {
+        currentCoins += earnings;
         UpdateCoinUI();
-        Debug.Log("Player has earned " + cost + " coins!");
+        Debug.Log("Player has earned " + earnings + " coins!");
     }
 
-
-    private void LoseCoinsOnDeath(object sender, EventArgs e) {
-        currentCoins -= coinsDroppedOnDeath;
+    public void LoseCoins(int loss) {
+        currentCoins -= loss;
         UpdateCoinUI();
-        CoinDropSystem.Instance.DropCoins(gameObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
-        // Debug.Log("Player died and has lost " + currentCoins + " coins!");
     }
+
 
     public bool HasEnoughMoney(int cost) {
         if (cost > currentCoins) {
@@ -68,7 +61,8 @@ public class CoinSystem : MonoBehaviour {
         coinCounter.GetComponent<CoinUI>().SetCoinCount(currentCoins);
     }
 
-    public int GetCurrentCoins {
-        get {return this.currentCoins;}
-    }
+    public int CurrentCoins {
+    get { return this.currentCoins; }
+    set { this.currentCoins = value; }
+}
 }
