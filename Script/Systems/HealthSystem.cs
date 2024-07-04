@@ -10,7 +10,7 @@ public class HealthSystem : MonoBehaviour {
     private HealthBarUI healthBarUI;
     private IStats playerStats;
 
-    private bool isDead = false;
+    public bool isDead = false;
 
     // Event to notify when damage is taken
     public event EventHandler OnDamageTaken;

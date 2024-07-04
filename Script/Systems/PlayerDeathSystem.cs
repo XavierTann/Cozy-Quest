@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEditor.EditorTools;
 
 public class PlayerDeathSystem : MonoBehaviour 
 {
@@ -19,13 +21,17 @@ public class PlayerDeathSystem : MonoBehaviour
     [SerializeField] private int maxDropDistance;
     [SerializeField] private GameObject coinPrefab;
 
-    [SerializeField] private float respawnTimer = 2f;
+    [SerializeField] private GameObject deathUI;
+
+    private GameObject deadObject;
 
 
     public event EventHandler<OnDeathEventArgs> OnPlayerDeath;
     public class OnDeathEventArgs : EventArgs {
         public GameObject DeadObject { get; set; }
     }
+
+    public event Action OnPlayerReset;
   
 
     private void Awake() {
@@ -35,37 +41,46 @@ public class PlayerDeathSystem : MonoBehaviour
         Instance = this;
 
         OnPlayerDeath += LoseCoinsOnDeath;
+
+        // Listener for Revive Button
+        deathUI.GetComponentInChildren<Button>().onClick.AddListener(() => ResetPlayer(deadObject));
     }
 
 
     public void Die(GameObject deadObject) {
         Debug.Log("Player dieded!");
+        this.deadObject = deadObject;
+
         OnPlayerDeath?.Invoke(this, new OnDeathEventArgs {DeadObject = deadObject});
 
         // Show Death Animation
 
-        // Destroy game object and reinstantiate?
-        StartCoroutine(ResetPlayerAfterDelay(deadObject, respawnTimer));
+        // Show Death UI
+        deathUI.SetActive(true);
         
     }
 
 
     private void LoseCoinsOnDeath(object sender, OnDeathEventArgs e) {
-        // Update UI if its a player, else just drop coins
-  
         CoinSystem.Instance.LoseCoins(coinsDroppedOnDeath);
         CoinDropSystem.Instance.DropCoins(e.DeadObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
     }
 
-    private IEnumerator ResetPlayerAfterDelay(GameObject deadObject, float respawnTimer) {
-        yield return new WaitForSeconds(respawnTimer);
-        ResetPlayer(deadObject);
-    }
 
     private void ResetPlayer(GameObject gameObject) {
+        // Disable death UI
+        deathUI.SetActive(false);
+
+        // Reset death status of game object health system
+        gameObject.GetComponent<HealthSystem>().isDead = false;
+
+        // Reset position, health, and coins
         gameObject.transform.position = new Vector3(0,0,0);
         gameObject.GetComponent<HealthSystem>().ResetHealth();
         CoinSystem.Instance.ResetCoins();
+
+        // Trigger player reset event
+        OnPlayerReset?.Invoke();
 
     }
 

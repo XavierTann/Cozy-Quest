@@ -4,20 +4,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum GameState {FreeRoam, Shop, Inventory, Dialog, Battle}
+public enum GameState {FreeRoam, Shop, Inventory, Dialog, Battle, Dead}
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
 
     GameState state;
-
-    private PlayerInputActionMap playerInputActionMap;
-
-    private void Awake()
-    {
-        playerInputActionMap = new PlayerInputActionMap();
-    }
 
 
     private void Start() {
@@ -42,6 +35,14 @@ public class GameController : MonoBehaviour
         };
 
         InventorySystem.Instance.OnHideInventory += () => {
+            state = GameState.FreeRoam;
+        };
+
+        PlayerDeathSystem.Instance.OnPlayerDeath += (sender, e) => {
+            state = GameState.Dead;
+        };
+
+        PlayerDeathSystem.Instance.OnPlayerReset += () => {
             state = GameState.FreeRoam;
         };
         
