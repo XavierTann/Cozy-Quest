@@ -22,6 +22,11 @@ public class HealthSystem : MonoBehaviour {
         InitializeHealthBarUI();
     }
 
+    public void ResetHealth() {
+        playerStats.Health = playerStats.MaxHealth;
+        UpdateHealthUI();
+    }
+
     public void TakeDamage(float damage)
     {
         float newHealth = playerStats.Health - damage;
@@ -29,11 +34,21 @@ public class HealthSystem : MonoBehaviour {
         if (newHealth <= 0 && isDead == false) 
         {
             isDead = true;
-            DeathSystem.Instance.Die(gameObject);
 
-            // Set health to zero in UI
-            playerStats.Health = 0;
-            UpdateHealthUI();
+            // If its a player
+            if (gameObject.layer == LayerMask.NameToLayer("Player")) {
+                PlayerDeathSystem.Instance.Die(gameObject);
+
+                // Set health to zero in UI
+                playerStats.Health = 0;
+                UpdateHealthUI();
+            }
+            else {
+                // If it is an enemy
+                EnemyDeathSystem.Instance.Die(gameObject);
+            }
+            
+            
         }
         
         else 

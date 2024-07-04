@@ -171,7 +171,6 @@ public class PlayerController : MonoBehaviour
             // Logic to add coins to player coins system
             CoinSystem.Instance.EarnCoins(1);
 
-            Debug.Log("Coins Collected!");
     }
 
 }

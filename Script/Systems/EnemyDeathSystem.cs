@@ -1,25 +1,17 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
-public class DeathSystem : MonoBehaviour 
+public class EnemyDeathSystem : MonoBehaviour
 {
-    /*
-    Death system manages drop items and coins on death.
-    For now, death dont lose equipment, just coins.
-    Listens for death event 
-    Definition for death event
-    Trigger death UI
-    */
-    public static DeathSystem Instance { get; private set; }
-
+    public static EnemyDeathSystem Instance { get; private set; }
 
     [SerializeField] private int coinsDroppedOnDeath;
     [SerializeField] private int maxDropDistance;
     [SerializeField] private GameObject coinPrefab;
 
-      public bool isDead = false;
 
-    public event EventHandler<OnDeathEventArgs> OnDeath;
+    public event EventHandler<OnDeathEventArgs> OnEnemyDeath;
     public class OnDeathEventArgs : EventArgs {
         public GameObject DeadObject { get; set; }
     }
@@ -31,23 +23,24 @@ public class DeathSystem : MonoBehaviour
         }
         Instance = this;
 
-        OnDeath += LoseCoinsOnDeath;
+        OnEnemyDeath += LoseCoinsOnDeath;
     }
-    
+
 
     public void Die(GameObject deadObject) {
-        Debug.Log("Player dieded!");
-        OnDeath?.Invoke(this, new OnDeathEventArgs {DeadObject = deadObject});
+        Debug.Log("Enemy dieded!");
+        OnEnemyDeath?.Invoke(this, new OnDeathEventArgs {DeadObject = deadObject});
+
+        // Show Enemy Death Animation
+        Destroy(deadObject);
+
+        
     }
 
 
     private void LoseCoinsOnDeath(object sender, OnDeathEventArgs e) {
         // Update UI if its a player, else just drop coins
-        if (e.DeadObject.layer == LayerMask.NameToLayer("Player")) {
-            CoinSystem.Instance.LoseCoins(coinsDroppedOnDeath);
-        }
-
         CoinDropSystem.Instance.DropCoins(e.DeadObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
     }
-    
+
 }

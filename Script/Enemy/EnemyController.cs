@@ -87,7 +87,4 @@ public class EnemyController : MonoBehaviour {
         canAttack = true;
     }
 
-    private void DropCoinsOnDeath(object sender, EventArgs e) {
-        CoinDropSystem.Instance.DropCoins(gameObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
-    }
 }

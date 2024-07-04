@@ -25,6 +25,11 @@ public class CoinSystem : MonoBehaviour {
         
     }
 
+    public void ResetCoins() {
+        currentCoins = startingCoins;
+        UpdateCoinUI();
+    }
+
 
     public void SpendCoins(int cost) {
         if (HasEnoughMoney(cost)) {
