@@ -60,6 +60,19 @@ public class HealthSystem : MonoBehaviour {
         
     }
 
+    public void Heal(float heal)
+    {
+        float newHealth = playerStats.Health + heal;
+        if (newHealth <= playerStats.MaxHealth) {
+            playerStats.Health = newHealth;
+            UpdateHealthUI();
+        }
+        else {
+            playerStats.Health = playerStats.MaxHealth;
+            UpdateHealthUI();
+        }        
+    }
+
     private void InitializeHealthBarUI() {
         playerStats = gameObject.GetComponent<IStats>();
         healthBar.SetActive(true);

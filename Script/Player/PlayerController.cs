@@ -73,6 +73,10 @@ public class PlayerController : MonoBehaviour
             CollectCoins();
         }
 
+        if (Input.GetKeyDown(KeyCode.H)) {
+            PotionSystem.Instance.HealingPotion();
+        }
+
     }
 
 
