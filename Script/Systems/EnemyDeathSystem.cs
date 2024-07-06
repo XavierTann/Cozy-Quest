@@ -28,11 +28,13 @@ public class EnemyDeathSystem : MonoBehaviour
 
 
     public void Die(GameObject deadObject) {
-        Debug.Log("Enemy dieded!");
         OnEnemyDeath?.Invoke(this, new OnDeathEventArgs {DeadObject = deadObject});
 
         // Show Enemy Death Animation
         Destroy(deadObject);
+
+        // Give player XP for killing
+        ExperienceSystem.Instance.IncreaseXP(deadObject.GetComponent<EnemyStats>().XPDrop);
 
         
     }

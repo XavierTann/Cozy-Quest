@@ -34,7 +34,6 @@ public class CoinDropSystem : MonoBehaviour {
             SetRandomPosition(entity, maxDropDistance);
             SpawnCoin(coinPrefab);
         }
-        Debug.Log($"Spawned {numberOfCoinsDropped} coin");
     }
 
 

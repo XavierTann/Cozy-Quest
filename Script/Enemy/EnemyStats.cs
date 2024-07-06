@@ -9,6 +9,8 @@ public class EnemyStats : MonoBehaviour, IStats {
     [SerializeField] private float enemyAttackRange;
     [SerializeField] private float enemyMovementSpeed;
     [SerializeField] private float enemyDetectRange;
+    
+    [SerializeField] private int xpDrop;
 
     private float enemyHealth;
 
@@ -35,6 +37,10 @@ public class EnemyStats : MonoBehaviour, IStats {
 
     public float DetectRange {
         get { return enemyDetectRange; } 
+    }
+    
+    public int XPDrop {
+        get { return xpDrop; } 
     }
 
     private void Awake()
