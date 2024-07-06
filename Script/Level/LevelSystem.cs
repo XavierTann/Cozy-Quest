@@ -14,7 +14,11 @@ public class LevelSystem : MonoBehaviour {
         Calculate how much xp to next level
         Define and invoke Level Up Event to notify subscibers like Skill tree system
     */
+
+    [SerializeField] private GameObject levelUI;
+
     public static LevelSystem Instance {get; private set;}
+
     public Action OnLevelUp;
 
     private int level = 1;
@@ -36,6 +40,9 @@ public class LevelSystem : MonoBehaviour {
         level += 1;
         OnLevelUp?.Invoke();
         Debug.Log("Level up!");
+
+        // Update UI
+        levelUI.GetComponent<LevelUI>().SetLevel(level);
     }
 
 }
