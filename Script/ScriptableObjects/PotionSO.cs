@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Potion", menuName = "PotionSO")]
-public class PotionSO : ScriptableObject, IItems
+public class PotionSO : ScriptableObject, IStackableItems
 {
     [SerializeField] private new string name;
     [SerializeField] private Sprite sprite;
@@ -19,4 +19,6 @@ public class PotionSO : ScriptableObject, IItems
     public float HealDuration { get => healDuration; }
     public int Cost { get => cost; }
     public string SpecialEffects { get => specialEffects; }
+
+    public Sprite Sprite {get => sprite;}
 }

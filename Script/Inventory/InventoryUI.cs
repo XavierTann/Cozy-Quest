@@ -19,6 +19,9 @@ public class InventoryUI : MonoBehaviour
 
     private List<WeaponSO> weaponSOList = new List<WeaponSO>();
 
+    public Dictionary<IItems, (int index, int quantity) > NameDictionary;
+    public Dictionary<int, (IItems item, int quantity) > IndexDictionary;
+
     private void Awake() {
         if (Instance != null && Instance != this ) {
             Destroy(gameObject);
@@ -26,8 +29,14 @@ public class InventoryUI : MonoBehaviour
         Instance = this;
 
         hideInventoryButton.onClick.AddListener(HideDisplay);
-
+        
     }
+
+    private void Start() {
+        NameDictionary = InventorySystem.Instance.NameDictionary;
+        IndexDictionary = InventorySystem.Instance.IndexDictionary;
+    }
+       
 
     
     public void HandleUpdate() {
@@ -37,28 +46,24 @@ public class InventoryUI : MonoBehaviour
     public void DisplayInventory() {
         inventoryUI.SetActive(true);
         InventorySystem.Instance.OnOpenInventory?.Invoke();
-        foreach (WeaponSO weapon in weaponSOList) {
-            // Display item on UI
-            Debug.Log($"{weapon.name} is displayed");
-        }
         Debug.Log("Inventory Displayed!");
     }
 
     public void UpdateItems() {
-        weaponSOList = InventorySystem.Instance.WeaponSOList;
+        NameDictionary = InventorySystem.Instance.NameDictionary;
+        IndexDictionary = InventorySystem.Instance.IndexDictionary;
 
-        if (weaponSOList != null) {
-            
-            foreach (WeaponSO weaponSO in weaponSOList)
-            {
-            int weaponSOIndex = weaponSOList.IndexOf(weaponSO);
-
-            Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(weaponSOIndex);
-            inventorySlot.GetComponent<InventorySlot>().SetSprite(weaponSO);
-            inventorySlot.GetComponent<InventorySlot>().WeaponSO = weaponSO;
-
-            
-            }        
+        if (IndexDictionary != null) {
+          
+            for (int i = 0 ; i < 20 ; i ++) {
+                if (IndexDictionary.ContainsKey(i)) {
+                    Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(i);
+                    IItems item = IndexDictionary[i].item;
+                    inventorySlot.GetComponent<InventorySlot>().SetSprite(item);
+                    inventorySlot.GetComponent<InventorySlot>().Item = item;
+                }
+                
+            }    
         }
         
     }

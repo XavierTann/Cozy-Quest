@@ -9,8 +9,8 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Sprite equippedIcon;
     [SerializeField] private Button deleteButton;
 
-    private WeaponSO weaponSO;
-    public WeaponSO WeaponSO {get {return WeaponSO;} set {weaponSO = value;} }
+    private IItems item;
+    public IItems Item {get {return item;} set {item = value;} }
 
     private void Awake() {
         if (equipButton != null)
@@ -24,12 +24,12 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    public void SetSprite(WeaponSO weapon) {
-        weaponSO = weapon;
+    public void SetSprite(IItems item) {
+        this.item = item;
         Image imageComponent = gameObject.transform.GetChild(0).GetComponent<Image>();
         if (imageComponent != null)
     {
-        imageComponent.sprite = weapon.Sprite;
+        imageComponent.sprite = item.Sprite;
         imageComponent.color = Color.white;
     }
     else
@@ -39,26 +39,30 @@ public class InventorySlot : MonoBehaviour
     }
 
     private void EquipItem() {      
-        if (weaponSO == null) {
+        if (item == null) {
             Debug.Log("No Weapon in slot!");
         }
-            
-        EquipmentManager.Instance.EquipWeapon(weaponSO);
+        
+        if (item is WeaponSO) {
+            EquipmentManager.Instance.EquipWeapon(item as WeaponSO);
+            equipButton.GetComponent<Image>().sprite = equippedIcon;
+        }
 
-        equipButton.GetComponent<Image>().sprite = equippedIcon;
+        // Two more cases here, if item is armor, and if item is potion
+
     
     }
 
     private void DeleteItem() {
-        weaponSO = null;
+        item = null;
         Image imageComponent = gameObject.transform.GetChild(0).GetComponent<Image>();
         imageComponent.sprite = null;
-        imageComponent.color = hexToColor("70531B");
+        imageComponent.color = HexToColor("70531B");
 
         Debug.Log("Delete Item!");
     }
 
-    public static Color hexToColor(string hex)
+    public static Color HexToColor(string hex)
 	{
 		hex = hex.Replace ("0x", "");//in case the string is formatted 0xFFFFFF
 		hex = hex.Replace ("#", "");//in case the string is formatted #FFFFFF

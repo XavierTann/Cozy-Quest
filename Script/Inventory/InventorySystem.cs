@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,6 +25,10 @@ public class InventorySystem : MonoBehaviour
     private List<WeaponSO> weaponSOList;
     public List<WeaponSO> WeaponSOList{get {return weaponSOList;} }
 
+    public Dictionary<IItems, (int index, int quantity) > NameDictionary = new(); 
+    public Dictionary<int, (IItems item, int quantity) > IndexDictionary = new();
+    private int nextKey = 0;
+
     public Action OnOpenInventory;
     public Action OnHideInventory;
 
@@ -37,22 +42,56 @@ public class InventorySystem : MonoBehaviour
         weaponSOList = new List<WeaponSO>();
     }
 
-    public void AddItems (WeaponSO weapon) {
-        if (weaponSOList.Count < 20) {
-            weaponSOList.Add(weapon);
-            Debug.Log($"{weapon.name} added to Inventory!");
+    // public void AddItems (WeaponSO weapon) {
+    //     if (weaponSOList.Count < 20) {
+    //         weaponSOList.Add(weapon);
+    //         Debug.Log($"{weapon.name} added to Inventory!");
+
+    //         // Display UI
+    //         InventoryUI.Instance.UpdateItems();
+    //     }
+    //     // Else not enough space in inventory
+    // }
+
+    private void RemoveItems (IItems item) {
+        int index = NameDictionary[item].index;
+        NameDictionary.Remove(item);
+        IndexDictionary.Remove(index);
+        nextKey = index;
+    }
+
+    // New dictionary stuff
+    public void AddItems (IItems item) {
+        if (nextKey < 20) {
+
+            if (item.GetType() is IStackableItems) {
+                AddStackableItem(item, nextKey);
+            } 
+            else {
+                AddNonStackableItem(item, nextKey);
+            }
 
             // Display UI
             InventoryUI.Instance.UpdateItems();
         }
-        // Else not enough space in inventory
+        else {
+            Debug.Log("Not enough space in inventory!");
+            }
     }
 
-    private void RemoveItems (WeaponSO weapon) {
-        if (weaponSOList.Contains(weapon)) {
-            weaponSOList.Remove(weapon);
-            InventoryUI.Instance.UpdateItems();
+    private void AddNonStackableItem(IItems item, int index) {
+        NameDictionary[item] = (index, 1);
+        IndexDictionary[index] = (item, 1);
+        nextKey += 1;
+    }
+
+    private void AddStackableItem(IItems item, int index) {
+        if (NameDictionary.ContainsKey(item)) {
+            var info = NameDictionary[item];
+            NameDictionary[item] = (info.index, info.quantity + 1);
+        }
+        else {
+            AddNonStackableItem(item, index);
         }
     }
-
 }

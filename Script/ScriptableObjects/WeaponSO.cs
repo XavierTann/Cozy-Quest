@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "WeaponSO")]
-public class WeaponSO : ScriptableObject, IItems
+public class WeaponSO : ScriptableObject, INonStackableItems
 {
     [SerializeField] private new string name;
     [SerializeField] private Sprite sprite;

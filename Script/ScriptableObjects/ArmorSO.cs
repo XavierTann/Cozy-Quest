@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Armor", menuName = "ArmorSO")]
-public class ArmorSO : ScriptableObject, IItems
+public class ArmorSO : ScriptableObject, INonStackableItems
 {
     [SerializeField] private new string name;
     [SerializeField] private Sprite sprite;
@@ -19,4 +19,6 @@ public class ArmorSO : ScriptableObject, IItems
     public float Weight { get => weight; }
     public int Cost { get => cost; }
     public string SpecialEffects { get => specialEffects; }
+
+    public Sprite Sprite {get => sprite;}
 }
