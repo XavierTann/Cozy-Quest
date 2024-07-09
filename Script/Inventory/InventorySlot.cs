@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,10 +21,8 @@ public class InventorySlot : MonoBehaviour
     [SerializeField]
     private Image itemImage;
 
-    private int count;
-
-    private IItems item;
-    public IItems Item
+    private ItemSO item;
+    public ItemSO Item
     {
         get { return item; }
         set { item = value; }
@@ -33,7 +32,7 @@ public class InventorySlot : MonoBehaviour
     {
         if (equipButton != null)
         {
-            equipButton.onClick.AddListener(EquipItem);
+            equipButton.onClick.AddListener(UseItem);
         }
 
         if (deleteButton != null)
@@ -42,7 +41,7 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    public void UpdateSlotUI(IItems item)
+    public void UpdateSlotUI(ItemSO item)
     {
         // Set image sprite
         this.item = item;
@@ -53,16 +52,13 @@ public class InventorySlot : MonoBehaviour
             imageComponent.color = Color.white;
         }
 
-        // If Item is stackable, update stack ui.
-        if (item is PotionSO)
+        if (item is StackableItemSO stackableItemSO)
         {
-            count = InventorySystem.Instance.NameDictionary[item].quantity;
-            // Update UI
-            stackCount.GetComponent<Text>().text = count.ToString();
+            UpdateStackCount(stackableItemSO);
         }
     }
 
-    private void EquipItem()
+    private void UseItem()
     {
         if (item == null)
         {
@@ -75,22 +71,18 @@ public class InventorySlot : MonoBehaviour
             equipButton.GetComponent<Image>().sprite = equippedIcon;
         }
 
-        if (item is PotionSO)
+        if (item is PotionSO potionSO)
         {
             PotionSystem.Instance.UsePotion();
-            if (count > 1)
-            {
-                count -= 1;
-                stackCount.GetComponent<Text>().text = count.ToString();
 
-                // decrease quantity of both dictionaries
-                InventorySystem.Instance.DecreaseQuantity(item);
-                Debug.Log("Update count!");
+            // If no more potions left, remove sprite from inventory.
+            if (PotionSystem.Instance.potionSO.Count == 0)
+            {
+                DeleteItem();
             }
             else
             {
-                // Completely remove object
-                DeleteItem();
+                UpdateStackCount(potionSO);
             }
         }
 
@@ -100,18 +92,31 @@ public class InventorySlot : MonoBehaviour
     private void DeleteItem()
     {
         // Remove item from item dictionary because it will keep updating
-        InventorySystem.Instance.RemoveItem(item);
+        InventorySystem.Instance.RemoveItemFromDictionary(item);
 
-        // Update UI
+        RemoveSprite();
+
+        ClearStackCount();
+    }
+
+    private void RemoveSprite()
+    {
+        // Update UI and item field
         item = null;
         Image imageComponent = itemImage.GetComponent<Image>();
         imageComponent.sprite = null;
         imageComponent.color = HexToColor("70531B");
+    }
 
-        // Update Stack counter
+    private void UpdateStackCount(StackableItemSO stackableItemSO)
+    {
+        int count = stackableItemSO.Count;
+        stackCount.GetComponent<Text>().text = count.ToString();
+    }
+
+    private void ClearStackCount()
+    {
         stackCount.GetComponent<Text>().text = "";
-
-        Debug.Log("Delete Item!");
     }
 
     public static Color HexToColor(string hex)

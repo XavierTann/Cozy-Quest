@@ -23,8 +23,8 @@ public class InventorySystem : MonoBehaviour
     private int nextKey = 0;
     public int maxItems = 20;
 
-    public Dictionary<IItems, (int index, int quantity)> NameDictionary = new();
-    public Dictionary<int, (IItems item, int quantity)> IndexDictionary = new();
+    public Dictionary<ItemSO, (int index, int quantity)> NameDictionary = new();
+    public Dictionary<int, (ItemSO item, int quantity)> IndexDictionary = new();
 
     public Action OnOpenInventory;
     public Action OnHideInventory;
@@ -39,11 +39,11 @@ public class InventorySystem : MonoBehaviour
         Instance = this;
     }
 
-    public void AddItems(IItems item)
+    public void AddItem(ItemSO item)
     {
         if (nextKey < maxItems)
         {
-            if (item is IStackableItems)
+            if (item.IsStackable)
             {
                 AddStackableItem(item);
             }
@@ -61,14 +61,14 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    private void AddNonStackableItem(IItems item)
+    private void AddNonStackableItem(ItemSO item)
     {
         NameDictionary[item] = (nextKey, 1);
         IndexDictionary[nextKey] = (item, 1);
         nextKey += 1;
     }
 
-    private void AddStackableItem(IItems item)
+    private void AddStackableItem(ItemSO item)
     {
         if (NameDictionary.ContainsKey(item))
         {
@@ -85,14 +85,14 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void DecreaseQuantity(IItems item)
+    public void DecreaseItemQuantity(ItemSO item)
     {
         var (index, quantity) = NameDictionary[item];
         NameDictionary[item] = (index, quantity - 1);
         IndexDictionary[index] = (item, quantity - 1);
     }
 
-    public void RemoveItem(IItems item)
+    public void RemoveItemFromDictionary(ItemSO item)
     {
         int index = NameDictionary[item].index;
         NameDictionary.Remove(item);

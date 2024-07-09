@@ -9,31 +9,43 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField]
+    private float moveSpeed = 1f;
     public PlayerInputActionMap playerInputActionMap;
     private Vector2 movement;
     private Rigidbody2D rb;
 
     private Animator animator;
 
-    [SerializeField] private LayerMask collisionLayer;
-    [SerializeField] private LayerMask interactableLayer;
-    [SerializeField] private LayerMask waterLayer;
-    [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private LayerMask collectiblesLayer;
+    [SerializeField]
+    private LayerMask collisionLayer;
 
-    [SerializeField] private GameObject inventoryUI;
+    [SerializeField]
+    private LayerMask interactableLayer;
 
-    [SerializeField] private float pickUpRange = 1f;
+    [SerializeField]
+    private LayerMask waterLayer;
+
+    [SerializeField]
+    private LayerMask enemyLayer;
+
+    [SerializeField]
+    private LayerMask collectiblesLayer;
+
+    [SerializeField]
+    private GameObject inventoryUI;
+
+    [SerializeField]
+    private float pickUpRange = 1f;
 
     private Vector3 targetPos;
     private Vector3 interactPos;
     private Vector3 faceDirection;
-    
-    private void Awake() {
+
+    private void Awake()
+    {
         // Movement
         playerInputActionMap = new PlayerInputActionMap();
         rb = GetComponent<Rigidbody2D>();
@@ -49,140 +61,165 @@ public class PlayerController : MonoBehaviour
 
         playerInputActionMap.Player.Attack.performed += _ => OnAttack();
         playerInputActionMap.Player.OpenInventory.performed += _ => OpenInventory();
-
     }
 
     private void OnDisable()
     {
         // Disable the input action map
         playerInputActionMap.Disable();
-
     }
 
-   
-    public void HandleUpdate() {
+    public void HandleUpdate()
+    {
         Move();
         MoveAnimation();
-        
-        if (Input.GetKeyDown(KeyCode.E)) {
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
             Interact();
         }
 
-
-        if (ItemDetected() != null) {
+        if (ItemDetected() != null)
+        {
             Collider2D collider = ItemDetected();
 
-            if (collider.CompareTag("Coin")) {
+            if (collider.CompareTag("Coin"))
+            {
                 CollectCoin();
             }
-            if (collider.CompareTag("Potion")) {
+            if (collider.CompareTag("Potion"))
+            {
                 CollectPotion();
             }
-
         }
 
-        if (Input.GetKeyDown(KeyCode.H)) {
-            if (PotionSystem.Instance.potionCount > 0) {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (PotionSystem.Instance.potionSO.Count > 0)
+            {
                 PotionSystem.Instance.OnPotionUsed();
             }
         }
-
     }
 
-
-    private void Move() {
+    private void Move()
+    {
         movement = playerInputActionMap.Player.Move.ReadValue<Vector2>();
         targetPos = rb.position + movement * moveSpeed * Time.deltaTime;
         faceDirection = new Vector3(movement.x, movement.y);
 
-        if (IsWalkable(targetPos)) {
+        if (IsWalkable(targetPos))
+        {
             rb.MovePosition(targetPos);
         }
     }
 
-    private void MoveAnimation() {
-        if (movement != Vector2.zero) {
+    private void MoveAnimation()
+    {
+        if (movement != Vector2.zero)
+        {
             // Moving
-            if (movement.x != 0) movement.y = 0;
+            if (movement.x != 0)
+                movement.y = 0;
 
             animator.SetBool("isMoving", true);
             animator.SetFloat("moveX", movement.x);
             animator.SetFloat("moveY", movement.y);
         }
-        else {
+        else
+        {
             // Not Moving
             animator.SetBool("isMoving", false);
-
         }
-        
     }
 
     private void Interact()
     {
         interactPos = transform.position + faceDirection;
-        
+
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
-        if (collider != null) {
+        if (collider != null)
+        {
             collider.GetComponent<Interactable>()?.Interact();
         }
     }
 
-    private void OnAttack() {
+    private void OnAttack()
+    {
         Attack();
         AttackAnimation();
     }
 
-
     private void Attack()
     {
-        GameObject attackee = AttackSystem.Instance.DetectAttack(gameObject, enemyLayer, faceDirection);
-        if (attackee != null) {
+        GameObject attackee = AttackSystem.Instance.DetectAttack(
+            gameObject,
+            enemyLayer,
+            faceDirection
+        );
+        if (attackee != null)
+        {
             AttackSystem.Instance.PerformAttack(gameObject, attackee);
         }
-        
     }
 
-    private void AttackAnimation() {
+    private void AttackAnimation()
+    {
         animator.SetTrigger("isAttacking");
-        if (movement != Vector2.zero) {
+        if (movement != Vector2.zero)
+        {
             animator.SetFloat("moveX", movement.x);
             animator.SetFloat("moveY", movement.y);
         }
     }
 
-    private void OpenInventory() {
+    private void OpenInventory()
+    {
         inventoryUI.GetComponent<InventoryUI>().DisplayInventory();
     }
 
-
-    private bool IsWalkable(Vector3 targetPos) {
-        if (Physics2D.OverlapCircle(targetPos, 0.1f, collisionLayer | interactableLayer | waterLayer) != null) {
+    private bool IsWalkable(Vector3 targetPos)
+    {
+        if (
+            Physics2D.OverlapCircle(
+                targetPos,
+                0.1f,
+                collisionLayer | interactableLayer | waterLayer
+            ) != null
+        )
+        {
             return false;
         }
         return true;
     }
 
-    public Vector3 TargetPos {
-        get {return targetPos;}
+    public Vector3 TargetPos
+    {
+        get { return targetPos; }
     }
 
-
-    private Collider2D ItemDetected() {
-        var collider = Physics2D.OverlapCircle(gameObject.transform.position, pickUpRange, collectiblesLayer);
-        if (collider != null) {
+    private Collider2D ItemDetected()
+    {
+        var collider = Physics2D.OverlapCircle(
+            gameObject.transform.position,
+            pickUpRange,
+            collectiblesLayer
+        );
+        if (collider != null)
+        {
             return collider;
-        } 
+        }
         return null;
     }
 
-    private void CollectCoin() {
+    private void CollectCoin()
+    {
         // Logic to remove coin prefab
-            GameObject coin = ItemDetected().gameObject;
-            Destroy(coin);
+        GameObject coin = ItemDetected().gameObject;
+        Destroy(coin);
 
-            // Logic to add coins to player coins system
-            CoinSystem.Instance.EarnCoins(1);
-
+        // Logic to add coins to player coins system
+        CoinSystem.Instance.EarnCoins(1);
     }
 
     private void CollectPotion()
@@ -193,5 +230,4 @@ public class PlayerController : MonoBehaviour
 
         PotionSystem.Instance.OnPotionObtained?.Invoke();
     }
-
 }

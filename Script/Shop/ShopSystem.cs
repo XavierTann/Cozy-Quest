@@ -27,7 +27,7 @@ public class ShopSystem : MonoBehaviour
         Instance = this;
     }
 
-    public bool BuyItem(IItems item)
+    public bool BuyItem(ItemSO item)
     {
         if (CoinSystem.Instance.HasEnoughMoney(item.Cost))
         {
@@ -43,8 +43,6 @@ public class ShopSystem : MonoBehaviour
             {
                 PotionSystem.Instance.OnPotionObtained?.Invoke();
             }
-
-            InventorySystem.Instance.AddItems(item);
 
             return true;
         }

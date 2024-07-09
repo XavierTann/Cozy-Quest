@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Potion", menuName = "PotionSO")]
-public class PotionSO : ItemSO, IStackableItems
+public class PotionSO : StackableItemSO
 {
     [SerializeField]
     private float healAmount;

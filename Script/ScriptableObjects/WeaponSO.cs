@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "WeaponSO")]
-public class WeaponSO : ItemSO, INonStackableItems
+public class WeaponSO : ItemSO
 {
     [SerializeField]
     private float damage;

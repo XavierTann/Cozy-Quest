@@ -9,10 +9,9 @@ public class PotionSystem : MonoBehaviour
     GameObject playerGameObject;
 
     [SerializeField]
-    PotionSO potionSO;
+    public PotionSO potionSO;
 
     private HealthSystem healthSystem;
-    public int potionCount;
 
     public Action OnPotionObtained;
     public Action OnPotionUsed;
@@ -27,6 +26,8 @@ public class PotionSystem : MonoBehaviour
 
         OnPotionObtained += ObtainPotion;
         OnPotionUsed += UsePotion;
+
+        potionSO.Count = 0;
     }
 
     private void Start()
@@ -41,10 +42,13 @@ public class PotionSystem : MonoBehaviour
 
     public void UsePotion()
     {
-        if (potionCount > 0)
+        if (potionSO.Count > 0)
         {
-            potionCount -= 1;
-            PotionUI.Instance.UpdatePotionUI(potionCount);
+            potionSO.Count -= 1;
+            PotionUI.Instance.UpdatePotionUI(potionSO.Count);
+
+            // Decrease quantity of both dictionaries
+            InventorySystem.Instance.DecreaseItemQuantity(potionSO);
 
             // Depending on what kind of potion
             HealingPotion();
@@ -53,7 +57,8 @@ public class PotionSystem : MonoBehaviour
 
     public void ObtainPotion()
     {
-        potionCount += 1;
-        PotionUI.Instance.UpdatePotionUI(potionCount);
+        potionSO.Count += 1;
+        PotionUI.Instance.UpdatePotionUI(potionSO.Count);
+        InventorySystem.Instance.AddItem(potionSO);
     }
 }

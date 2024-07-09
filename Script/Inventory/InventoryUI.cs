@@ -20,8 +20,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField]
     private Button hideInventoryButton;
 
-    public Dictionary<IItems, (int index, int quantity)> NameDictionary;
-    public Dictionary<int, (IItems item, int quantity)> IndexDictionary;
+    public Dictionary<ItemSO, (int index, int quantity)> NameDictionary;
+    public Dictionary<int, (ItemSO item, int quantity)> IndexDictionary;
 
     private void Awake()
     {
@@ -64,7 +64,7 @@ public class InventoryUI : MonoBehaviour
                 if (IndexDictionary.ContainsKey(i))
                 {
                     Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(i);
-                    IItems item = IndexDictionary[i].item;
+                    ItemSO item = IndexDictionary[i].item;
                     inventorySlot.GetComponent<InventorySlot>().UpdateSlotUI(item);
                     inventorySlot.GetComponent<InventorySlot>().Item = item;
                 }

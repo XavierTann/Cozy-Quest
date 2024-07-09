@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ItemSO : ScriptableObject, IItems
+public class ItemSO : ScriptableObject
 {
     [SerializeField]
     private new string name;
@@ -11,6 +11,9 @@ public class ItemSO : ScriptableObject, IItems
 
     [SerializeField]
     private int cost;
+
+    [SerializeField]
+    private bool isStackable;
 
     public string Name
     {
@@ -24,5 +27,9 @@ public class ItemSO : ScriptableObject, IItems
     public int Cost
     {
         get => cost;
+    }
+    public virtual bool IsStackable
+    {
+        get => isStackable;
     }
 }

@@ -38,7 +38,7 @@ public class ShopUI : MonoBehaviour
         LeaveShopButton.onClick.AddListener(LeaveShop);
     }
 
-    public void RemoveItems(GameObject shopSlot, IItems item)
+    public void RemoveItems(GameObject shopSlot, ItemSO item)
     {
         bool boughtItem = ShopSystem.Instance.BuyItem(item);
         if (boughtItem)
