@@ -5,20 +5,28 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Armor", menuName = "ArmorSO")]
-public class ArmorSO : ScriptableObject, INonStackableItems
+public class ArmorSO : ItemSO, INonStackableItems
 {
-    [SerializeField] private new string name;
-    [SerializeField] private Sprite sprite;
-    [SerializeField] private float defence;
-    [SerializeField] private float weight;
-    [SerializeField] private int cost;
-    [SerializeField] private string specialEffects;
+    [SerializeField]
+    private float defence;
 
-    public string Name { get => name;}
-    public float Defence { get => defence; }
-    public float Weight { get => weight; }
-    public int Cost { get => cost; }
-    public string SpecialEffects { get => specialEffects; }
+    [SerializeField]
+    private float weight;
 
-    public Sprite Sprite {get => sprite;}
+    [SerializeField]
+    private string specialEffects;
+
+    public float Defence
+    {
+        get => defence;
+    }
+    public float Weight
+    {
+        get => weight;
+    }
+
+    public string SpecialEffects
+    {
+        get => specialEffects;
+    }
 }

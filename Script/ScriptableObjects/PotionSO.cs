@@ -5,24 +5,28 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Potion", menuName = "PotionSO")]
-public class PotionSO : ScriptableObject, IStackableItems
+public class PotionSO : ItemSO, IStackableItems
 {
-    [SerializeField] private new string name;
-    [SerializeField] private Sprite sprite;
-    [SerializeField] private float healAmount;
-    [SerializeField] private float healDuration;
-    [SerializeField] private int cost;
-    [SerializeField] private string specialEffects;
+    [SerializeField]
+    private float healAmount;
 
-    public string Name { get => name; }
-    public float HealAmount { get => healAmount; }
-    public float HealDuration { get => healDuration; }
-    public int Cost { get => cost; }
-    public string SpecialEffects { get => specialEffects; }
+    [SerializeField]
+    private float healDuration;
 
-    public Sprite Sprite {get => sprite;}
+    [SerializeField]
+    private string specialEffects;
 
+    public float HealAmount
+    {
+        get => healAmount;
+    }
+    public float HealDuration
+    {
+        get => healDuration;
+    }
 
-
-
+    public string SpecialEffects
+    {
+        get => specialEffects;
+    }
 }
