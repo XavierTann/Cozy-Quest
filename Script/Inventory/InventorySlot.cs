@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
@@ -75,18 +76,21 @@ public class InventorySlot : MonoBehaviour
         {
             PotionSystem.Instance.UsePotion();
 
-            // If no more potions left, remove sprite from inventory.
-            if (PotionSystem.Instance.potionSO.Count == 0)
-            {
-                DeleteItem();
-            }
-            else
-            {
-                UpdateStackCount(potionSO);
-            }
+            UpdateStackCount(potionSO);
         }
 
         // Two more cases here, if item is armor, and if item is potion
+    }
+
+    private void UpdateStackCount(StackableItemSO stackableItemSO)
+    {
+        int count = stackableItemSO.Count;
+        stackCount.GetComponent<Text>().text = count.ToString();
+
+        if (count == 0)
+        {
+            DeleteItem();
+        }
     }
 
     private void DeleteItem()
@@ -106,12 +110,6 @@ public class InventorySlot : MonoBehaviour
         Image imageComponent = itemImage.GetComponent<Image>();
         imageComponent.sprite = null;
         imageComponent.color = HexToColor("70531B");
-    }
-
-    private void UpdateStackCount(StackableItemSO stackableItemSO)
-    {
-        int count = stackableItemSO.Count;
-        stackCount.GetComponent<Text>().text = count.ToString();
     }
 
     private void ClearStackCount()

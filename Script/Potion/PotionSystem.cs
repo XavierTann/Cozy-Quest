@@ -47,9 +47,6 @@ public class PotionSystem : MonoBehaviour
             potionSO.Count -= 1;
             PotionUI.Instance.UpdatePotionUI(potionSO.Count);
 
-            // Decrease quantity of both dictionaries
-            InventorySystem.Instance.DecreaseItemQuantity(potionSO);
-
             // Depending on what kind of potion
             HealingPotion();
         }

@@ -23,8 +23,8 @@ public class InventorySystem : MonoBehaviour
     private int nextKey = 0;
     public int maxItems = 20;
 
-    public Dictionary<ItemSO, (int index, int quantity)> NameDictionary = new();
-    public Dictionary<int, (ItemSO item, int quantity)> IndexDictionary = new();
+    public Dictionary<ItemSO, int> NameDictionary = new();
+    public Dictionary<int, ItemSO> IndexDictionary = new();
 
     public Action OnOpenInventory;
     public Action OnHideInventory;
@@ -43,13 +43,9 @@ public class InventorySystem : MonoBehaviour
     {
         if (nextKey < maxItems)
         {
-            if (item.IsStackable)
+            if (!NameDictionary.ContainsKey(item))
             {
-                AddStackableItem(item);
-            }
-            else
-            {
-                AddNonStackableItem(item);
+                AddItemToDictionary(item);
             }
 
             // Display UI
@@ -61,40 +57,16 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    private void AddNonStackableItem(ItemSO item)
+    private void AddItemToDictionary(ItemSO item)
     {
-        NameDictionary[item] = (nextKey, 1);
-        IndexDictionary[nextKey] = (item, 1);
+        NameDictionary[item] = nextKey;
+        IndexDictionary[nextKey] = item;
         nextKey += 1;
-    }
-
-    private void AddStackableItem(ItemSO item)
-    {
-        if (NameDictionary.ContainsKey(item))
-        {
-            var info = NameDictionary[item];
-            NameDictionary[item] = (info.index, info.quantity + 1);
-            IndexDictionary[info.index] = (item, info.quantity + 1);
-        }
-        else
-        {
-            NameDictionary[item] = (nextKey, 1);
-            IndexDictionary[nextKey] = (item, 1);
-
-            nextKey += 1;
-        }
-    }
-
-    public void DecreaseItemQuantity(ItemSO item)
-    {
-        var (index, quantity) = NameDictionary[item];
-        NameDictionary[item] = (index, quantity - 1);
-        IndexDictionary[index] = (item, quantity - 1);
     }
 
     public void RemoveItemFromDictionary(ItemSO item)
     {
-        int index = NameDictionary[item].index;
+        int index = NameDictionary[item];
         NameDictionary.Remove(item);
         IndexDictionary.Remove(index);
     }

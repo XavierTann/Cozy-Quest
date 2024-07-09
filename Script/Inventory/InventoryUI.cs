@@ -20,8 +20,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField]
     private Button hideInventoryButton;
 
-    public Dictionary<ItemSO, (int index, int quantity)> NameDictionary;
-    public Dictionary<int, (ItemSO item, int quantity)> IndexDictionary;
+    public Dictionary<ItemSO, int> ItemDictionary;
+    public Dictionary<int, ItemSO> IndexDictionary;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
-        NameDictionary = InventorySystem.Instance.NameDictionary;
+        ItemDictionary = InventorySystem.Instance.NameDictionary;
         IndexDictionary = InventorySystem.Instance.IndexDictionary;
     }
 
@@ -54,7 +54,7 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateItems()
     {
-        NameDictionary = InventorySystem.Instance.NameDictionary;
+        ItemDictionary = InventorySystem.Instance.NameDictionary;
         IndexDictionary = InventorySystem.Instance.IndexDictionary;
 
         if (IndexDictionary != null)
@@ -64,7 +64,7 @@ public class InventoryUI : MonoBehaviour
                 if (IndexDictionary.ContainsKey(i))
                 {
                     Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(i);
-                    ItemSO item = IndexDictionary[i].item;
+                    ItemSO item = IndexDictionary[i];
                     inventorySlot.GetComponent<InventorySlot>().UpdateSlotUI(item);
                     inventorySlot.GetComponent<InventorySlot>().Item = item;
                 }
