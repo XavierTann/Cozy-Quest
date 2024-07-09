@@ -7,7 +7,13 @@ public class PotionSystem : MonoBehaviour
 
 
     [SerializeField] GameObject playerGameObject;
+    [SerializeField] PotionSO potionSO;
+
     private HealthSystem healthSystem;
+    public int potionCount;
+
+    public Action OnPotionObtained;
+    public Action OnPotionUsed;
 
 
     private void Awake() {
@@ -15,6 +21,10 @@ public class PotionSystem : MonoBehaviour
             Destroy(gameObject);
         }
         Instance = this;
+
+        OnPotionObtained += ObtainPotion;
+        OnPotionUsed += UsePotion;
+        
     }
 
     private void Start() {
@@ -23,6 +33,26 @@ public class PotionSystem : MonoBehaviour
 
     public void HealingPotion (){
         healthSystem.Heal(50);
+    }
+
+    public void UsePotion() {
+        potionCount -= 1;
+        PotionUI.Instance.UpdatePotionUI(potionCount);
+
+        // Depending on what kind of potion
+        HealingPotion();
+
+        // Remove from Inventory
+        InventorySystem.Instance.RemoveItems(potionSO);
+        
+    }
+
+    public void ObtainPotion() {
+        potionCount += 1;
+        PotionUI.Instance.UpdatePotionUI(potionCount);
+
+        // Add to Inventory
+        InventorySystem.Instance.AddItems(potionSO);
     }
 
 }

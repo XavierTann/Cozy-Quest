@@ -10,6 +10,9 @@ public class EnemyDeathSystem : MonoBehaviour
     [SerializeField] private int maxDropDistance;
     [SerializeField] private GameObject coinPrefab;
 
+    [SerializeField] private GameObject potionPrefab;
+    [SerializeField] private float potionDropChance = 1;
+
 
     public event EventHandler<OnDeathEventArgs> OnEnemyDeath;
     public class OnDeathEventArgs : EventArgs {
@@ -23,7 +26,7 @@ public class EnemyDeathSystem : MonoBehaviour
         }
         Instance = this;
 
-        OnEnemyDeath += LoseCoinsOnDeath;
+        OnEnemyDeath += DropItemsOnDeath;
     }
 
 
@@ -40,9 +43,14 @@ public class EnemyDeathSystem : MonoBehaviour
     }
 
 
-    private void LoseCoinsOnDeath(object sender, OnDeathEventArgs e) {
-        // Update UI if its a player, else just drop coins
+    private void DropItemsOnDeath(object sender, OnDeathEventArgs e) {
+        // Drop coins
         CoinDropSystem.Instance.DropCoins(e.DeadObject, coinsDroppedOnDeath, maxDropDistance, coinPrefab);
+
+        // Chance to trigger drop potion event
+        if (UnityEngine.Random.value < potionDropChance) {
+            PotionDropSystem.Instance.DropPotion(e.DeadObject, maxDropDistance, potionPrefab);
+        }
     }
 
 }

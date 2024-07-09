@@ -17,8 +17,6 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private Button hideInventoryButton;
 
-    private List<WeaponSO> weaponSOList = new List<WeaponSO>();
-
     public Dictionary<IItems, (int index, int quantity) > NameDictionary;
     public Dictionary<int, (IItems item, int quantity) > IndexDictionary;
 

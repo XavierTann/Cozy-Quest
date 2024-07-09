@@ -21,4 +21,8 @@ public class PotionSO : ScriptableObject, IStackableItems
     public string SpecialEffects { get => specialEffects; }
 
     public Sprite Sprite {get => sprite;}
+
+
+
+
 }

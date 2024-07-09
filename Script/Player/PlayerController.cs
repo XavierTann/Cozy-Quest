@@ -69,18 +69,26 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (CoinsDetected() != null) {
-            CollectCoins();
+        if (ItemDetected() != null) {
+            Collider2D collider = ItemDetected();
+
+            if (collider.CompareTag("Coin")) {
+                CollectCoin();
+            }
+            if (collider.CompareTag("Potion")) {
+                CollectPotion();
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.H)) {
-            PotionSystem.Instance.HealingPotion();
+            if (PotionSystem.Instance.potionCount > 0) {
+                PotionSystem.Instance.OnPotionUsed();
+            }
         }
 
     }
 
-
-    
 
     private void Move() {
         movement = playerInputActionMap.Player.Move.ReadValue<Vector2>();
@@ -159,7 +167,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private Collider2D CoinsDetected() {
+    private Collider2D ItemDetected() {
         var collider = Physics2D.OverlapCircle(gameObject.transform.position, pickUpRange, collectiblesLayer);
         if (collider != null) {
             return collider;
@@ -167,14 +175,23 @@ public class PlayerController : MonoBehaviour
         return null;
     }
 
-    private void CollectCoins() {
+    private void CollectCoin() {
         // Logic to remove coin prefab
-            GameObject coin = CoinsDetected().gameObject;
+            GameObject coin = ItemDetected().gameObject;
             Destroy(coin);
 
             // Logic to add coins to player coins system
             CoinSystem.Instance.EarnCoins(1);
 
+    }
+
+    private void CollectPotion()
+    {
+        GameObject potion = ItemDetected().gameObject;
+
+        Destroy(potion);
+
+        PotionSystem.Instance.OnPotionObtained?.Invoke();
     }
 
 }

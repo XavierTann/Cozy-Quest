@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Button equipButton;
     [SerializeField] private Sprite equippedIcon;
     [SerializeField] private Button deleteButton;
+    [SerializeField] private GameObject stackCount;
 
     private IItems item;
     public IItems Item {get {return item;} set {item = value;} }
@@ -36,16 +37,24 @@ public class InventorySlot : MonoBehaviour
     {
         Debug.LogWarning("Image component not found in children of " + gameObject.name);
     }
+
+         if (item is PotionSO) {
+            UpdateStackCount();
+    }
     }
 
     private void EquipItem() {      
         if (item == null) {
-            Debug.Log("No Weapon in slot!");
+            Debug.Log("No Item in slot!");
         }
         
         if (item is WeaponSO) {
             EquipmentManager.Instance.EquipWeapon(item as WeaponSO);
             equipButton.GetComponent<Image>().sprite = equippedIcon;
+        }
+
+        if (item is PotionSO) {
+            PotionSystem.Instance.UsePotion();
         }
 
         // Two more cases here, if item is armor, and if item is potion
@@ -60,6 +69,12 @@ public class InventorySlot : MonoBehaviour
         imageComponent.color = HexToColor("70531B");
 
         Debug.Log("Delete Item!");
+    }
+
+    private void UpdateStackCount() {
+        int count = InventorySystem.Instance.NameDictionary[item].quantity;
+        stackCount.GetComponent<Text>().text = count.ToString();
+
     }
 
     public static Color HexToColor(string hex)

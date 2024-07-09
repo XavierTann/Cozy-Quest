@@ -46,7 +46,6 @@ public class CoinSystem : MonoBehaviour {
     public void EarnCoins(int earnings) {
         currentCoins += earnings;
         UpdateCoinUI();
-        Debug.Log("Player has earned " + earnings + " coins!");
     }
 
     public void LoseCoins(int loss) {
