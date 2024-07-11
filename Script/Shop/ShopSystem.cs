@@ -44,6 +44,13 @@ public class ShopSystem : MonoBehaviour
                 PotionSystem.Instance.OnPotionObtained?.Invoke();
             }
 
+            if (item is ArmorSO)
+            {
+                EquipmentManager.Instance.EquipArmor(item as ArmorSO);
+            }
+
+            InventorySystem.Instance.AddItem(item);
+
             return true;
         }
         return false;

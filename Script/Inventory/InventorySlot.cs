@@ -75,11 +75,14 @@ public class InventorySlot : MonoBehaviour
         if (item is PotionSO potionSO)
         {
             PotionSystem.Instance.UsePotion();
-
             UpdateStackCount(potionSO);
         }
 
-        // Two more cases here, if item is armor, and if item is potion
+        if (item is ArmorSO)
+        {
+            EquipmentManager.Instance.EquipArmor(item as ArmorSO);
+            equipButton.GetComponent<Image>().sprite = equippedIcon;
+        }
     }
 
     private void UpdateStackCount(StackableItemSO stackableItemSO)

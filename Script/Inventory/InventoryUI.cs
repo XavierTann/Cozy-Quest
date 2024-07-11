@@ -66,7 +66,6 @@ public class InventoryUI : MonoBehaviour
                     Transform inventorySlot = inventoryUI.transform.GetChild(0).GetChild(i);
                     ItemSO item = IndexDictionary[i];
                     inventorySlot.GetComponent<InventorySlot>().UpdateSlotUI(item);
-                    inventorySlot.GetComponent<InventorySlot>().Item = item;
                 }
             }
         }

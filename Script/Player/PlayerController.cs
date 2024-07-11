@@ -100,6 +100,10 @@ public class PlayerController : MonoBehaviour
                 PotionSystem.Instance.OnPotionUsed();
             }
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            SkillTreeUI.Instance.OpenSkillTree();
+        }
     }
 
     private void Move()

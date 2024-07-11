@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: HealingPotion
   sprite: {fileID: 21300000, guid: b7d19ec039fa7b141bd165aa95496c75, type: 3}
+  cost: 20
+  isStackable: 1
+  maxStackSize: 64
+  Count: 0
   healAmount: 40
   healDuration: 5
-  cost: 20
   specialEffects: Nil
