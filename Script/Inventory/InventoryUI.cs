@@ -43,6 +43,9 @@ public class InventoryUI : MonoBehaviour
     public void HandleUpdate()
     {
         UpdateItems();
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            HideDisplay();
+        }
     }
 
     public void DisplayInventory()

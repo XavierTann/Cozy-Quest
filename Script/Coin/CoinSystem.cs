@@ -1,17 +1,23 @@
 using System;
 using UnityEngine;
 
-public class CoinSystem : MonoBehaviour {
-
+public class CoinSystem : MonoBehaviour
+{
     public static CoinSystem Instance { get; private set; }
 
-    [SerializeField] private int startingCoins;
-    [SerializeField] private GameObject coinCounter;
+    [SerializeField]
+    private int startingCoins;
+
+    [SerializeField]
+    private GameObject guiCoinCounter;
+
+    [SerializeField]
+    private GameObject shopCoinCounter;
 
     private int currentCoins;
 
-    private void Awake() {
-
+    private void Awake()
+    {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -22,51 +28,58 @@ public class CoinSystem : MonoBehaviour {
 
         currentCoins = startingCoins;
         UpdateCoinUI();
-        
     }
 
-    public void ResetCoins() {
+    public void ResetCoins()
+    {
         currentCoins = startingCoins;
         UpdateCoinUI();
     }
 
-
-    public void SpendCoins(int cost) {
-        if (HasEnoughMoney(cost)) {
+    public void SpendCoins(int cost)
+    {
+        if (HasEnoughMoney(cost))
+        {
             currentCoins -= cost;
             UpdateCoinUI();
             Debug.Log("Player has spent " + cost + " coins!");
         }
-        else {
+        else
+        {
             Debug.Log("Player has not enough money!");
         }
-        
     }
 
-    public void EarnCoins(int earnings) {
+    public void EarnCoins(int earnings)
+    {
         currentCoins += earnings;
         UpdateCoinUI();
     }
 
-    public void LoseCoins(int loss) {
+    public void LoseCoins(int loss)
+    {
         currentCoins -= loss;
         UpdateCoinUI();
     }
 
-
-    public bool HasEnoughMoney(int cost) {
-        if (cost > currentCoins) {
+    public bool HasEnoughMoney(int cost)
+    {
+        if (cost > currentCoins)
+        {
             return false;
         }
         return true;
     }
 
-    private void UpdateCoinUI() {
-        coinCounter.GetComponent<CoinUI>().SetCoinCount(currentCoins);
+    private void UpdateCoinUI()
+    {
+        guiCoinCounter.GetComponent<CoinUI>().SetCoinCount(currentCoins);
+        shopCoinCounter.GetComponent<CoinUI>().SetCoinCount(currentCoins);
     }
 
-    public int CurrentCoins {
-    get { return this.currentCoins; }
-    set { this.currentCoins = value; }
-}
+    public int CurrentCoins
+    {
+        get { return this.currentCoins; }
+        set { this.currentCoins = value; }
+    }
 }

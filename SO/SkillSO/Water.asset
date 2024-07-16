@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   name: Water
-  sprite: {fileID: 0}
+  sprite: {fileID: -921637342563169502, guid: 26219afe650eca349a89f642aec6aaf2, type: 3}
   skillPointsRequired: 2
   damage: 0
-  manaCost: 0
+  manaCost: 20

@@ -16,6 +16,9 @@ public class SkillTreeUI : MonoBehaviour
     [SerializeField]
     List<SkillSO> skillSOList;
 
+    public Action OnOpenSkillTree;
+    public Action OnHideSkillTree;
+
     private void Awake()
     {
         if (Instance != null & Instance != this)
@@ -36,6 +39,12 @@ public class SkillTreeUI : MonoBehaviour
         }
     }
 
+    public void HandleUpdate() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            HideUI();
+        }
+    }
+
     private void LearnSkill(SkillSO skillSO)
     {
         SkillSystem.Instance.LearnSkill(skillSO);
@@ -44,10 +53,17 @@ public class SkillTreeUI : MonoBehaviour
     public void OpenSkillTree()
     {
         transform.GetChild(0).gameObject.SetActive(true);
+        OnOpenSkillTree?.Invoke();
+
     }
 
     private void UpdateUI()
     {
         // Update UI to show when the skill is learnt
+    }
+
+    private void HideUI() {
+        gameObject.SetActive(false);
+        OnHideSkillTree?.Invoke();
     }
 }

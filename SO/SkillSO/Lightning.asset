@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a90e8144206c46a7836381d9ca039ca, type: 3}
   m_Name: Lightning
   m_EditorClassIdentifier: 
-  name: 
-  sprite: {fileID: 0}
-  skillPointsRequired: 0
+  name: Lightning
+  sprite: {fileID: -5576168233181342510, guid: 26219afe650eca349a89f642aec6aaf2, type: 3}
+  skillPointsRequired: 3
   damage: 0
   manaCost: 0

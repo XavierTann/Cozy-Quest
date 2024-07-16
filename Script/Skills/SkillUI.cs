@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
@@ -33,6 +34,8 @@ public class SkillUI : MonoBehaviour
             int index = i;
             if (learntSkillsList.Count >= index + 1)
             {
+                skillSlotList[index].SetActive(true);
+                skillSlotList[index].GetComponentInChildren<TextMeshProUGUI>().text = learntSkillsList[index].Name;
                 skillSlotList[index].GetComponent<Image>().sprite = learntSkillsList[index].Sprite;
             }
         }
@@ -61,5 +64,6 @@ public class SkillUI : MonoBehaviour
     private void ActivateSkill(SkillSO skillSO)
     {
         Debug.Log($"{skillSO.Name} is activated!");
+        ManaSystem.Instance.UseMana(skillSO.ManaCost);
     }
 }

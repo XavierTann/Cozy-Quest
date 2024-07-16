@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, IStats {
     [SerializeField] private float playerMaxHealth;
+    [SerializeField] private float playerMaxMana;
     [SerializeField] private float playerAttackDamage;
     [SerializeField] private float playerAttackRange;
     [SerializeField] private float playerMovementSpeed;
@@ -12,6 +13,7 @@ public class PlayerStats : MonoBehaviour, IStats {
 
 
     private float playerHealth;
+    private float playerMana;
 
     private void Awake()
     {
@@ -26,6 +28,15 @@ public class PlayerStats : MonoBehaviour, IStats {
     public float Health {
         get { return playerHealth; }
         set { playerHealth = Mathf.Clamp(value, 0, playerMaxHealth); } // Ensure health stays within valid range
+    }
+
+    public float MaxMana {
+        get { return playerMaxMana; }
+    }
+
+    public float Mana {
+        get { return playerMana; }
+        set { playerMana = Mathf.Clamp(value, 0, playerMaxMana); } // Ensure health stays within valid range
     }
 
     public float AttackDamage {

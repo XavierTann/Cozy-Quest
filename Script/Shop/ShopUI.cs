@@ -43,7 +43,8 @@ public class ShopUI : MonoBehaviour
         bool boughtItem = ShopSystem.Instance.BuyItem(item);
         if (boughtItem)
         {
-            shopSlot.GetComponentInChildren<Image>().sprite = itemSoldSprite;
+            shopSlot.transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite =
+                itemSoldSprite;
         }
         else
         {
@@ -61,7 +62,8 @@ public class ShopUI : MonoBehaviour
     {
         for (int i = 0; i < shopSlotList.Length; i++)
         {
-            shopSlotList[i].GetComponentInChildren<Image>().sprite = shopItemList[i].Sprite;
+            shopSlotList[i].transform.GetChild(0).GetChild(1).GetComponent<Image>().sprite =
+                shopItemList[i].Sprite;
             shopSlotList[i].GetComponentInChildren<Text>().text = shopItemList[i].Cost.ToString();
         }
 

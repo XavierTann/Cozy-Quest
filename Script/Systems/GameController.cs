@@ -11,7 +11,8 @@ public enum GameState
     Inventory,
     Dialog,
     Battle,
-    Dead
+    Dead,
+    SkillTree
 }
 
 public class GameController : MonoBehaviour
@@ -62,6 +63,14 @@ public class GameController : MonoBehaviour
         {
             state = GameState.FreeRoam;
         };
+        SkillTreeUI.Instance.OnOpenSkillTree += () =>
+        {
+            state = GameState.SkillTree;
+        };
+        SkillTreeUI.Instance.OnHideSkillTree += () =>
+        {
+            state = GameState.FreeRoam;
+        };
     }
 
     private void Update()
@@ -76,12 +85,17 @@ public class GameController : MonoBehaviour
         {
             playerController.playerInputActionMap.Disable();
             DialogManager.Instance.HandleUpdate();
-            Time.timeScale = 0;
         }
         else if (state == GameState.Inventory)
         {
             playerController.playerInputActionMap.Disable();
             InventoryUI.Instance.HandleUpdate();
+            Time.timeScale = 0;
+        }
+        else if (state == GameState.SkillTree)
+        {
+            playerController.playerInputActionMap.Disable();
+            SkillTreeUI.Instance.HandleUpdate();
             Time.timeScale = 0;
         }
         else
