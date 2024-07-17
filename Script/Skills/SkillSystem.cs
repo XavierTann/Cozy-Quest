@@ -9,6 +9,10 @@ public class SkillSystem : MonoBehaviour
     public static SkillSystem Instance { get; private set; }
 
     private int skillPoints;
+    public int SkillPoints
+    {
+        get { return skillPoints; }
+    }
 
     [SerializeField]
     private List<SkillSO> availableSkills = new();
@@ -16,7 +20,6 @@ public class SkillSystem : MonoBehaviour
     public List<SkillSO> learntSkillsList = new();
 
     public Action OnLearnSkill; // This event should pass in the skill that you learnt and enable that particular skill in the UI.
-    
 
     private void Awake()
     {
@@ -33,8 +36,6 @@ public class SkillSystem : MonoBehaviour
     {
         LevelSystem.Instance.OnLevelUp += GainSkillPoint;
     }
-
-    
 
     private void GainSkillPoint()
     {

@@ -35,11 +35,10 @@ public class SkillUI : MonoBehaviour
             if (learntSkillsList.Count >= index + 1)
             {
                 skillSlotList[index].SetActive(true);
-                skillSlotList[index].GetComponentInChildren<TextMeshProUGUI>().text = learntSkillsList[index].Name;
-                skillSlotList[index].GetComponent<Image>().sprite = learntSkillsList[index].Sprite;
+                skillSlotList[index].transform.GetChild(1).GetComponent<Image>().sprite =
+                    learntSkillsList[index].Sprite;
             }
         }
-        Debug.Log("Updated UI!");
     }
 
     private void UpdateButtonListener()

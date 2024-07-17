@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
@@ -27,7 +28,7 @@ public class SkillTreeUI : MonoBehaviour
         }
         Instance = this;
 
-        for (int i = 0; i < skillButtonList.Count; i++)
+        for (int i = 0; i < math.min(skillButtonList.Count, skillSOList.Count); i++)
         {
             int index = i;
             skillButtonList[index]
@@ -36,11 +37,17 @@ public class SkillTreeUI : MonoBehaviour
                 {
                     LearnSkill(skillSOList[index]);
                 });
+
+            skillButtonList[index].transform.GetChild(1).GetComponent<Image>().sprite = skillSOList[
+                index
+            ].Sprite;
         }
     }
 
-    public void HandleUpdate() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+    public void HandleUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             HideUI();
         }
     }
@@ -54,7 +61,6 @@ public class SkillTreeUI : MonoBehaviour
     {
         transform.GetChild(0).gameObject.SetActive(true);
         OnOpenSkillTree?.Invoke();
-
     }
 
     private void UpdateUI()
@@ -62,8 +68,9 @@ public class SkillTreeUI : MonoBehaviour
         // Update UI to show when the skill is learnt
     }
 
-    private void HideUI() {
-        gameObject.SetActive(false);
+    private void HideUI()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
         OnHideSkillTree?.Invoke();
     }
 }
