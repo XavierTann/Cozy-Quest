@@ -32,6 +32,18 @@ public class SkillSystem : MonoBehaviour
 
     public Action OnLearnSkill; // This event should pass in the skill that you learnt and enable that particular skill in the UI.
 
+    // public event EventHandler<SkillEventArgs> OnActivateSkill;
+
+    // public class SkillEventArgs : EventArgs
+    // {
+    //     public Vector3 Position { get; }
+
+    //     public SkillEventArgs(Vector3 position)
+    //     {
+    //         Position = position;
+    //     }
+    // }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -40,7 +52,7 @@ public class SkillSystem : MonoBehaviour
         }
         Instance = this;
 
-        skillPoints = 0;
+        skillPoints = 10;
     }
 
     private void Start()
@@ -84,6 +96,9 @@ public class SkillSystem : MonoBehaviour
             Vector3 spawnPosition =
                 player.GetComponent<PlayerController>().TargetPos
                 + player.GetComponent<PlayerController>().FaceDirection * distance;
+
+            // Damage enemies
+            AttackSystem.Instance.DetectSkill(skillSO, spawnPosition);
 
             switch (skillSO.Name)
             {

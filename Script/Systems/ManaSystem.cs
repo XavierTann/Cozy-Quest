@@ -23,6 +23,8 @@ public class ManaSystem : MonoBehaviour
         Instance = this;
 
         maxMana = player.GetComponent<PlayerStats>().MaxMana;
+        // For convenience
+        maxMana = 10000;
         currentMana = maxMana;
     }
 

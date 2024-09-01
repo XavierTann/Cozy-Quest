@@ -2,17 +2,20 @@ using System.Diagnostics.Tracing;
 using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
-public class AttackSystem : MonoBehaviour {
+public class AttackSystem : MonoBehaviour
+{
     // Attack logic, like applying damage, detecting attacks
 
     public static AttackSystem Instance { get; private set; }
+
+    [SerializeField]
+    private LayerMask enemyLayer;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-    
         }
         else
         {
@@ -36,10 +39,15 @@ public class AttackSystem : MonoBehaviour {
         }
     }
 
-    public GameObject DetectAttack(GameObject attacker, LayerMask attackeeLayer, Vector3 faceDirection) {
+    public GameObject DetectAttack(
+        GameObject attacker,
+        LayerMask attackeeLayer,
+        Vector3 faceDirection
+    )
+    {
         IStats attackerStats = attacker.GetComponent<IStats>();
 
-        Vector2 faceDirection2D = new (faceDirection.x, faceDirection.y);
+        Vector2 faceDirection2D = new(faceDirection.x, faceDirection.y);
 
         Vector2 start = attacker.transform.position;
 
@@ -47,7 +55,8 @@ public class AttackSystem : MonoBehaviour {
 
         RaycastHit2D hit = Physics2D.Linecast(start, end, attackeeLayer);
 
-        if (hit.collider != null) {
+        if (hit.collider != null)
+        {
             // Debug.Log("Hit!");
             return hit.collider.gameObject;
         }
@@ -55,5 +64,17 @@ public class AttackSystem : MonoBehaviour {
         // No object detected
         return null;
     }
-    
+
+    public void DetectSkill(SkillSO skillSO, Vector2 position)
+    {
+        Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(
+            position,
+            skillSO.AreaOfEffect,
+            enemyLayer
+        );
+        foreach (Collider2D collider2D in collider2Ds)
+        {
+            collider2D.gameObject.GetComponent<HealthSystem>().TakeDamage(skillSO.Damage);
+        }
+    }
 }

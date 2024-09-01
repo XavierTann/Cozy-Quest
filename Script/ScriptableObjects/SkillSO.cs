@@ -22,7 +22,8 @@ public class SkillSO : ScriptableObject
     [SerializeField]
     private int manaCost;
 
-    // public MonoScript script;
+    [SerializeField]
+    private float areaOfEffect;
 
     private bool hasLearnt;
 
@@ -68,8 +69,8 @@ public class SkillSO : ScriptableObject
         set { hasLearnt = value; }
     }
 
-    // public MonoScript Script
-    // {
-    //     get { return script; }
-    // }
+    public float AreaOfEffect
+    {
+        get { return areaOfEffect; }
+    }
 }
