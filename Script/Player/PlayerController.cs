@@ -41,8 +41,21 @@ public class PlayerController : MonoBehaviour
     private float pickUpRange = 1f;
 
     private Vector3 targetPos;
+    public Vector3 TargetPos
+    {
+        get { return targetPos; }
+    }
     private Vector3 interactPos;
+    public Vector3 InteractPos
+    {
+        get { return interactPos; }
+    }
+
     private Vector3 faceDirection;
+    public Vector3 FaceDirection
+    {
+        get { return faceDirection; }
+    }
 
     private void Awake()
     {
@@ -110,7 +123,10 @@ public class PlayerController : MonoBehaviour
     {
         movement = playerInputActionMap.Player.Move.ReadValue<Vector2>();
         targetPos = rb.position + movement * moveSpeed * Time.deltaTime;
-        faceDirection = new Vector3(movement.x, movement.y);
+        if (movement.x != 0 || movement.y != 0)
+        {
+            faceDirection = new Vector3(movement.x, movement.y);
+        }
 
         if (IsWalkable(targetPos))
         {
@@ -195,11 +211,6 @@ public class PlayerController : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    public Vector3 TargetPos
-    {
-        get { return targetPos; }
     }
 
     private Collider2D ItemDetected()

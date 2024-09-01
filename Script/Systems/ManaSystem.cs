@@ -26,17 +26,19 @@ public class ManaSystem : MonoBehaviour
         currentMana = maxMana;
     }
 
-    public void UseMana(float mana)
+    public bool UseMana(float mana)
     {
         if (currentMana > mana)
         {
             currentMana -= mana;
             Debug.Log($"Used {mana} mana!");
             UpdateUI();
+            return true;
         }
         else
         {
             Debug.Log("Not enough mana");
+            return false;
         }
     }
 

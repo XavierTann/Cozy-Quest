@@ -15,7 +15,18 @@ public class SkillSystem : MonoBehaviour
     }
 
     [SerializeField]
-    private List<SkillSO> availableSkills = new();
+    private GameObject firePrefab;
+
+    [SerializeField]
+    private GameObject waterPrefab;
+
+    [SerializeField]
+    private GameObject lightningPrefab;
+
+    [SerializeField]
+    private GameObject player;
+
+    private int distance = 3;
 
     public List<SkillSO> learntSkillsList = new();
 
@@ -60,6 +71,49 @@ public class SkillSystem : MonoBehaviour
         else
         {
             Debug.Log("Not enough points!");
+        }
+    }
+
+    public void ActivateSkill(SkillSO skillSO)
+    {
+        Debug.Log($"{skillSO.Name} is activated!");
+        bool enoughMana = ManaSystem.Instance.UseMana(skillSO.ManaCost);
+
+        if (enoughMana)
+        {
+            Vector3 spawnPosition =
+                player.GetComponent<PlayerController>().TargetPos
+                + player.GetComponent<PlayerController>().FaceDirection * distance;
+
+            switch (skillSO.Name)
+            {
+                case "Fire":
+                    GameObject firePrefabInstance = Instantiate(
+                        firePrefab,
+                        spawnPosition,
+                        Quaternion.identity
+                    );
+                    Destroy(firePrefabInstance, 1);
+                    break;
+
+                case "Water":
+                    GameObject waterPrefabInstance = Instantiate(
+                        waterPrefab,
+                        spawnPosition,
+                        Quaternion.identity
+                    );
+                    Destroy(waterPrefabInstance, 1);
+                    break;
+
+                case "Lightning":
+                    GameObject lightningPrefabInstance = Instantiate(
+                        lightningPrefab,
+                        spawnPosition,
+                        Quaternion.identity
+                    );
+                    Destroy(lightningPrefabInstance, 1);
+                    break;
+            }
         }
     }
 }

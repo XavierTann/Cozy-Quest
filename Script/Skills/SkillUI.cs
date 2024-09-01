@@ -54,15 +54,9 @@ public class SkillUI : MonoBehaviour
                     .GetComponent<Button>()
                     .onClick.AddListener(() =>
                     {
-                        ActivateSkill(learntSkillsList[index]);
+                        SkillSystem.Instance.ActivateSkill(learntSkillsList[index]);
                     });
             }
         }
-    }
-
-    private void ActivateSkill(SkillSO skillSO)
-    {
-        Debug.Log($"{skillSO.Name} is activated!");
-        ManaSystem.Instance.UseMana(skillSO.ManaCost);
     }
 }

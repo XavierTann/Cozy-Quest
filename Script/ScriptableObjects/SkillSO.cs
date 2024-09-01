@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Skill", menuName = "SkillSO")]
@@ -10,6 +11,9 @@ public class SkillSO : ScriptableObject
     private Sprite sprite;
 
     [SerializeField]
+    private GameObject prefab;
+
+    [SerializeField]
     private int skillPointsRequired;
 
     [SerializeField]
@@ -17,6 +21,8 @@ public class SkillSO : ScriptableObject
 
     [SerializeField]
     private int manaCost;
+
+    // public MonoScript script;
 
     private bool hasLearnt;
 
@@ -31,6 +37,11 @@ public class SkillSO : ScriptableObject
     {
         get { return sprite; }
         set { sprite = value; }
+    }
+
+    public GameObject Prefab
+    {
+        get { return prefab; }
     }
 
     public int SkillPointsRequired
@@ -56,4 +67,9 @@ public class SkillSO : ScriptableObject
         get { return hasLearnt; }
         set { hasLearnt = value; }
     }
+
+    // public MonoScript Script
+    // {
+    //     get { return script; }
+    // }
 }
