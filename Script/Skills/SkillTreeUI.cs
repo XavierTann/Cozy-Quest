@@ -15,7 +15,7 @@ public class SkillTreeUI : MonoBehaviour
     List<Button> skillButtonList;
 
     [SerializeField]
-    List<SkillSO> skillSOList;
+    List<SpellSO> spellSOList;
 
     public Action OnOpenSkillTree;
     public Action OnHideSkillTree;
@@ -28,20 +28,25 @@ public class SkillTreeUI : MonoBehaviour
         }
         Instance = this;
 
-        for (int i = 0; i < math.min(skillButtonList.Count, skillSOList.Count); i++)
+        for (int i = 0; i < math.min(skillButtonList.Count, spellSOList.Count); i++)
         {
-            int index = i;
+            int index = i; // index is needed because index allows the integer to be stored in local scope
             skillButtonList[index]
                 .GetComponent<Button>()
                 .onClick.AddListener(() =>
                 {
-                    LearnSkill(skillSOList[index]);
+                    SkillSystem.Instance.LearnSpell(spellSOList[index]);
                 });
 
-            skillButtonList[index].transform.GetChild(1).GetComponent<Image>().sprite = skillSOList[
+            skillButtonList[index].transform.GetChild(1).GetComponent<Image>().sprite = spellSOList[
                 index
             ].Sprite;
         }
+    }
+
+    private void Start()
+    {
+        SkillSystem.Instance.OnLearnSpell += UpdateUI;
     }
 
     public void HandleUpdate()
@@ -52,11 +57,6 @@ public class SkillTreeUI : MonoBehaviour
         }
     }
 
-    private void LearnSkill(SkillSO skillSO)
-    {
-        SkillSystem.Instance.LearnSkill(skillSO);
-    }
-
     public void OpenSkillTree()
     {
         transform.GetChild(0).gameObject.SetActive(true);
@@ -65,7 +65,17 @@ public class SkillTreeUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Update UI to show when the skill is learnt
+        for (int i = 0; i < math.min(skillButtonList.Count, spellSOList.Count); i++)
+        {
+            if (spellSOList[i].HasLearnt == true)
+            {
+                // Grey out the sprite
+                skillButtonList[i].transform.GetChild(1).GetComponent<Image>().color = Color.gray;
+
+                // Disable onclick
+                skillButtonList[i].GetComponent<Button>().onClick.RemoveAllListeners();
+            }
+        }
     }
 
     private void HideUI()

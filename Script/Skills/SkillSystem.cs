@@ -28,21 +28,9 @@ public class SkillSystem : MonoBehaviour
 
     private int distance = 3;
 
-    public List<SkillSO> learntSkillsList = new();
+    public List<SpellSO> learntSpellsList = new();
 
-    public Action OnLearnSkill; // This event should pass in the skill that you learnt and enable that particular skill in the UI.
-
-    // public event EventHandler<SkillEventArgs> OnActivateSkill;
-
-    // public class SkillEventArgs : EventArgs
-    // {
-    //     public Vector3 Position { get; }
-
-    //     public SkillEventArgs(Vector3 position)
-    //     {
-    //         Position = position;
-    //     }
-    // }
+    public Action OnLearnSpell; // This event should pass in the skill that you learnt and enable that particular skill in the UI.
 
     private void Awake()
     {
@@ -71,14 +59,15 @@ public class SkillSystem : MonoBehaviour
         skillPoints -= number;
     }
 
-    public void LearnSkill(SkillSO skill)
+    public void LearnSpell(SpellSO spell)
     {
-        if (skill.SkillPointsRequired <= skillPoints)
+        if (spell.SkillPointsRequired <= skillPoints)
         {
-            LoseSkillPoint(skill.SkillPointsRequired);
-            learntSkillsList.Add(skill);
-            OnLearnSkill?.Invoke();
-            Debug.Log($"Learnt {skill.Name} Skill!");
+            LoseSkillPoint(spell.SkillPointsRequired);
+            learntSpellsList.Add(spell);
+            spell.HasLearnt = true;
+            OnLearnSpell?.Invoke();
+            Debug.Log($"Learnt {spell.Name} Spell!");
         }
         else
         {
@@ -86,10 +75,10 @@ public class SkillSystem : MonoBehaviour
         }
     }
 
-    public void ActivateSkill(SkillSO skillSO)
+    public void ActivateSpell(SpellSO spell)
     {
-        Debug.Log($"{skillSO.Name} is activated!");
-        bool enoughMana = ManaSystem.Instance.UseMana(skillSO.ManaCost);
+        Debug.Log($"{spell.Name} is activated!");
+        bool enoughMana = ManaSystem.Instance.UseMana(spell.ManaCost);
 
         if (enoughMana)
         {
@@ -98,9 +87,9 @@ public class SkillSystem : MonoBehaviour
                 + player.GetComponent<PlayerController>().FaceDirection * distance;
 
             // Damage enemies
-            AttackSystem.Instance.DetectSkill(skillSO, spawnPosition);
+            AttackSystem.Instance.DetectSpell(spell, spawnPosition);
 
-            switch (skillSO.Name)
+            switch (spell.Name)
             {
                 case "Fire":
                     GameObject firePrefabInstance = Instantiate(

@@ -65,16 +65,16 @@ public class AttackSystem : MonoBehaviour
         return null;
     }
 
-    public void DetectSkill(SkillSO skillSO, Vector2 position)
+    public void DetectSpell(SpellSO spell, Vector2 position)
     {
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(
             position,
-            skillSO.AreaOfEffect,
+            spell.AreaOfEffect,
             enemyLayer
         );
         foreach (Collider2D collider2D in collider2Ds)
         {
-            collider2D.gameObject.GetComponent<HealthSystem>().TakeDamage(skillSO.Damage);
+            collider2D.gameObject.GetComponent<HealthSystem>().TakeDamage(spell.Damage);
         }
     }
 }

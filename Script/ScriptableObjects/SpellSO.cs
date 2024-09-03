@@ -1,8 +1,9 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Skill", menuName = "SkillSO")]
-public class SkillSO : ScriptableObject
+[CreateAssetMenu(fileName = "New Spell", menuName = "SpellSO")]
+public class SpellSO : ScriptableObject
 {
     [SerializeField]
     private new string name;
@@ -25,7 +26,8 @@ public class SkillSO : ScriptableObject
     [SerializeField]
     private float areaOfEffect;
 
-    private bool hasLearnt;
+    [NonSerialized]
+    private bool hasLearnt = false;
 
     // Properties
     public string Name

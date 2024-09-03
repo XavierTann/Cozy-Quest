@@ -12,14 +12,14 @@ public class SkillUI : MonoBehaviour
     [SerializeField]
     private List<GameObject> skillSlotList;
 
-    private List<SkillSO> learntSkillsList;
+    private List<SpellSO> learntSpellsList;
 
     private void Start()
     {
-        SkillSystem.Instance.OnLearnSkill += OnLearntSkill;
+        SkillSystem.Instance.OnLearnSpell += OnLearntSpell;
     }
 
-    private void OnLearntSkill()
+    private void OnLearntSpell()
     {
         UpdateUI();
         UpdateButtonListener();
@@ -27,34 +27,34 @@ public class SkillUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        learntSkillsList = SkillSystem.Instance.learntSkillsList;
+        learntSpellsList = SkillSystem.Instance.learntSpellsList;
 
         for (int i = 0; i < skillSlotList.Count; i++)
         {
             int index = i;
-            if (learntSkillsList.Count >= index + 1)
+            if (learntSpellsList.Count >= index + 1)
             {
                 skillSlotList[index].SetActive(true);
                 skillSlotList[index].transform.GetChild(1).GetComponent<Image>().sprite =
-                    learntSkillsList[index].Sprite;
+                    learntSpellsList[index].Sprite;
             }
         }
     }
 
     private void UpdateButtonListener()
     {
-        learntSkillsList = SkillSystem.Instance.learntSkillsList;
+        learntSpellsList = SkillSystem.Instance.learntSpellsList;
 
         for (int i = 0; i < skillSlotList.Count; i++)
         {
             int index = i;
-            if (learntSkillsList.Count >= index + 1)
+            if (learntSpellsList.Count >= index + 1)
             {
                 skillSlotList[index]
                     .GetComponent<Button>()
                     .onClick.AddListener(() =>
                     {
-                        SkillSystem.Instance.ActivateSkill(learntSkillsList[index]);
+                        SkillSystem.Instance.ActivateSpell(learntSpellsList[index]);
                     });
             }
         }

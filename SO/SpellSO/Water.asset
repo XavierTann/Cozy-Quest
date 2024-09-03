@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a90e8144206c46a7836381d9ca039ca, type: 3}
-  m_Name: Lightning
+  m_Name: Water
   m_EditorClassIdentifier: 
-  name: Lightning
-  sprite: {fileID: 21300000, guid: f3ea7b66b95a44c43a6542a98790381b, type: 3}
-  skillPointsRequired: 3
+  name: Water
+  sprite: {fileID: 21300000, guid: f8c3e247363184eafa5bdc0969e62f52, type: 3}
+  prefab: {fileID: 0}
+  skillPointsRequired: 2
   damage: 20
-  manaCost: 20
+  manaCost: 30
+  areaOfEffect: 1
