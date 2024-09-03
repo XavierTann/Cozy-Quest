@@ -26,6 +26,9 @@ public class SpellSO : ScriptableObject
     [SerializeField]
     private float areaOfEffect;
 
+    [SerializeField]
+    private float range;
+
     [NonSerialized]
     private bool hasLearnt = false;
 
@@ -74,5 +77,10 @@ public class SpellSO : ScriptableObject
     public float AreaOfEffect
     {
         get { return areaOfEffect; }
+    }
+
+    public float Range
+    {
+        get { return range; }
     }
 }

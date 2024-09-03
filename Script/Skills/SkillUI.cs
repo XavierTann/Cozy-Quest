@@ -16,7 +16,7 @@ public class SkillUI : MonoBehaviour
 
     private void Start()
     {
-        SkillSystem.Instance.OnLearnSpell += OnLearntSpell;
+        SpellSystem.Instance.OnLearnSpell += OnLearntSpell;
     }
 
     private void OnLearntSpell()
@@ -27,7 +27,7 @@ public class SkillUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        learntSpellsList = SkillSystem.Instance.learntSpellsList;
+        learntSpellsList = SpellSystem.Instance.LearntSpellsList;
 
         for (int i = 0; i < skillSlotList.Count; i++)
         {
@@ -43,7 +43,7 @@ public class SkillUI : MonoBehaviour
 
     private void UpdateButtonListener()
     {
-        learntSpellsList = SkillSystem.Instance.learntSpellsList;
+        learntSpellsList = SpellSystem.Instance.LearntSpellsList;
 
         for (int i = 0; i < skillSlotList.Count; i++)
         {
@@ -54,7 +54,7 @@ public class SkillUI : MonoBehaviour
                     .GetComponent<Button>()
                     .onClick.AddListener(() =>
                     {
-                        SkillSystem.Instance.ActivateSpell(learntSpellsList[index]);
+                        SpellSystem.Instance.ActivateSpell(learntSpellsList[index]);
                     });
             }
         }

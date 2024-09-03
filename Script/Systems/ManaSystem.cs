@@ -33,7 +33,6 @@ public class ManaSystem : MonoBehaviour
         if (currentMana > mana)
         {
             currentMana -= mana;
-            Debug.Log($"Used {mana} mana!");
             UpdateUI();
             return true;
         }
@@ -47,13 +46,11 @@ public class ManaSystem : MonoBehaviour
     public void GainMana(float mana)
     {
         currentMana += mana;
-        Debug.Log($"Gained {mana} mana!");
         UpdateUI();
     }
 
     public void UpdateUI()
     {
         manaBarUI.GetComponent<ManaBarUI>().SetMana(currentMana, maxMana);
-        Debug.Log("Updated UI");
     }
 }

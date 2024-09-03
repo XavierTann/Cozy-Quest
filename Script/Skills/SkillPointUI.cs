@@ -13,7 +13,7 @@ public class SkillPointUI : MonoBehaviour
     {
         skillPointCounter.GetComponentInChildren<Text>().text = 0.ToString();
         SkillTreeUI.Instance.OnOpenSkillTree += UpdateUI;
-        SkillSystem.Instance.OnLearnSpell += UpdateUI;
+        SpellSystem.Instance.OnLearnSpell += UpdateUI;
     }
 
     private void UpdateUI()

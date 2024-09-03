@@ -35,7 +35,7 @@ public class SkillTreeUI : MonoBehaviour
                 .GetComponent<Button>()
                 .onClick.AddListener(() =>
                 {
-                    SkillSystem.Instance.LearnSpell(spellSOList[index]);
+                    SpellSystem.Instance.LearnSpell(spellSOList[index]);
                 });
 
             skillButtonList[index].transform.GetChild(1).GetComponent<Image>().sprite = spellSOList[
@@ -46,7 +46,7 @@ public class SkillTreeUI : MonoBehaviour
 
     private void Start()
     {
-        SkillSystem.Instance.OnLearnSpell += UpdateUI;
+        SpellSystem.Instance.OnLearnSpell += UpdateUI;
     }
 
     public void HandleUpdate()
