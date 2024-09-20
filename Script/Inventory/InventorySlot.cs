@@ -74,7 +74,7 @@ public class InventorySlot : MonoBehaviour
 
         if (item is PotionSO potionSO)
         {
-            PotionSystem.Instance.UsePotion();
+            PotionSystem.Instance.UsePotion("HealingPotion");
             UpdateStackCount(potionSO);
         }
 

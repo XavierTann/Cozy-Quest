@@ -19,3 +19,4 @@ MonoBehaviour:
   damage: 10
   manaCost: 10
   areaOfEffect: 1
+  range: 5

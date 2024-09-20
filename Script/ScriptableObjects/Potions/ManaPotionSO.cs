@@ -4,25 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New Potion", menuName = "PotionSO")]
-public class PotionSO : StackableItemSO
+[CreateAssetMenu(fileName = "New Mana Potion", menuName = "ManaPotionSO")]
+public class ManaPotionSO : PotionSO
 {
     [SerializeField]
-    private float healAmount;
+    private float manaGain;
 
     [SerializeField]
-    private float healDuration;
+    private float duration;
 
     [SerializeField]
     private string specialEffects;
 
-    public float HealAmount
+    public float ManaGain
     {
-        get => healAmount;
+        get => manaGain;
     }
-    public float HealDuration
+    public float Duration
     {
-        get => healDuration;
+        get => duration;
     }
 
     public string SpecialEffects

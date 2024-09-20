@@ -41,7 +41,8 @@ public class ShopSystem : MonoBehaviour
 
             if (item is PotionSO)
             {
-                PotionSystem.Instance.OnPotionObtained?.Invoke();
+                // TOFIX: obtain depending on what potion it is
+                PotionSystem.Instance.ObtainPotion("HealthPotion");
             }
 
             if (item is ArmorSO)

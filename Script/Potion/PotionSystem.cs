@@ -4,17 +4,30 @@ using UnityEngine;
 public class PotionSystem : MonoBehaviour
 {
     public static PotionSystem Instance { get; private set; }
+    public int HealthPotionCount
+    {
+        get => healthPotionCount;
+        set => healthPotionCount = value;
+    }
+    public int ManaPotionCount
+    {
+        get => manaPotionCount;
+        set => manaPotionCount = value;
+    }
 
     [SerializeField]
     GameObject playerGameObject;
 
     [SerializeField]
-    public PotionSO potionSO;
+    public PotionSO healthPotionSO;
+
+    [SerializeField]
+    public PotionSO manaPotionSO;
+
+    private int healthPotionCount;
+    private int manaPotionCount;
 
     private HealthSystem healthSystem;
-
-    public Action OnPotionObtained;
-    public Action OnPotionUsed;
 
     private void Awake()
     {
@@ -23,11 +36,6 @@ public class PotionSystem : MonoBehaviour
             Destroy(gameObject);
         }
         Instance = this;
-
-        OnPotionObtained += ObtainPotion;
-        OnPotionUsed += UsePotion;
-
-        potionSO.Count = 0;
     }
 
     private void Start()
@@ -40,22 +48,50 @@ public class PotionSystem : MonoBehaviour
         healthSystem.Heal(50);
     }
 
-    public void UsePotion()
+    public void ManaPotion()
     {
-        if (potionSO.Count > 0)
-        {
-            potionSO.Count -= 1;
-            PotionUI.Instance.UpdatePotionUI(potionSO.Count);
+        ManaSystem.Instance.GainMana(50);
+    }
 
-            // Depending on what kind of potion
-            HealingPotion();
+    public void UsePotion(string potionType)
+    {
+        // Depending on what kind of potion
+        if (potionType == "HealthPotion")
+        {
+            if (healthPotionCount > 0)
+            {
+                healthSystem.Heal(50);
+                healthPotionCount -= 1;
+                PotionUI.Instance.UpdatePotionUI("HealthPotion", healthPotionCount);
+                Debug.Log("Used Health Potion");
+            }
+        }
+        if (potionType == "ManaPotion")
+        {
+            if (manaPotionCount > 0)
+            {
+                ManaSystem.Instance.GainMana(50);
+                manaPotionCount -= 1;
+                PotionUI.Instance.UpdatePotionUI("ManaPotion", manaPotionCount);
+                Debug.Log("Used Mana Potion");
+            }
         }
     }
 
-    public void ObtainPotion()
+    public void ObtainPotion(string potionType)
     {
-        potionSO.Count += 1;
-        PotionUI.Instance.UpdatePotionUI(potionSO.Count);
-        InventorySystem.Instance.AddItem(potionSO);
+        // Depending on what kind of potion
+        if (potionType == "HealthPotion")
+        {
+            healthPotionCount += 1;
+            PotionUI.Instance.UpdatePotionUI("HealthPotion", healthPotionCount);
+            InventorySystem.Instance.AddItem(healthPotionSO);
+        }
+        if (potionType == "ManaPotion")
+        {
+            manaPotionCount += 1;
+            PotionUI.Instance.UpdatePotionUI("ManaPotion", manaPotionCount);
+            InventorySystem.Instance.AddItem(manaPotionSO);
+        }
     }
 }

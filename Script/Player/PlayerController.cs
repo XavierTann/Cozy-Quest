@@ -95,24 +95,23 @@ public class PlayerController : MonoBehaviour
         if (ItemDetected() != null)
         {
             Collider2D collider = ItemDetected();
-
-            if (collider.CompareTag("Coin"))
+            ICollectible collectible = collider.GetComponent<ICollectible>();
+            if (collectible != null)
             {
-                CollectCoin();
+                collectible.Collect();
             }
-            if (collider.CompareTag("Potion"))
-            {
-                CollectPotion();
-            }
+            Destroy(collider.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            if (PotionSystem.Instance.potionSO.Count > 0)
-            {
-                PotionSystem.Instance.OnPotionUsed();
-            }
+            PotionSystem.Instance.UsePotion("HealthPotion");
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PotionSystem.Instance.UsePotion("ManaPotion");
+        }
+
         if (Input.GetKeyDown(KeyCode.J))
         {
             SkillTreeUI.Instance.OpenSkillTree();
@@ -225,24 +224,5 @@ public class PlayerController : MonoBehaviour
             return collider;
         }
         return null;
-    }
-
-    private void CollectCoin()
-    {
-        // Logic to remove coin prefab
-        GameObject coin = ItemDetected().gameObject;
-        Destroy(coin);
-
-        // Logic to add coins to player coins system
-        CoinSystem.Instance.EarnCoins(1);
-    }
-
-    private void CollectPotion()
-    {
-        GameObject potion = ItemDetected().gameObject;
-
-        Destroy(potion);
-
-        PotionSystem.Instance.OnPotionObtained?.Invoke();
     }
 }

@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /* Responsibilities of Inventory System
    Manages deleting items, adding items to inventory, updating items like their durability,
@@ -23,8 +19,8 @@ public class InventorySystem : MonoBehaviour
     private int nextKey = 0;
     public int maxItems = 20;
 
-    public Dictionary<ItemSO, int> NameDictionary = new();
-    public Dictionary<int, ItemSO> IndexDictionary = new();
+    public Dictionary<ItemSO, int> NameDictionary = new(); // given a item, get the key
+    public Dictionary<int, ItemSO> IndexDictionary = new(); // given a key, get the item
 
     public Action OnOpenInventory;
     public Action OnHideInventory;
